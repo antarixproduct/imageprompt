@@ -4,8 +4,8 @@
   "description": "Create ready-to-copy social media design briefs with your brand details",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#081224",
-  "theme_color": "#081224",
+  "background_color": "#eef3f1",
+  "theme_color": "#18342b",
   "orientation": "portrait-primary",
   "icons": [
     {
