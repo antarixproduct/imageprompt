@@ -8,6 +8,7 @@ import {
   History,
   Menu,
   RefreshCw,
+  RotateCw,
   Sparkles,
   X,
 } from 'lucide-react';
@@ -108,6 +109,18 @@ const STEP_TITLES = {
   4: { label: 'Step 4', title: 'Text to show', desc: 'Enter the copy for your design' },
 };
 
+const COPY_HINT = 'Copy the description and paste in chatgpt with your brand logo or other images.';
+
+function createCaptcha() {
+  const left = Math.floor(Math.random() * 8) + 2;
+  const right = Math.floor(Math.random() * 8) + 2;
+
+  return {
+    prompt: `${left} + ${right}`,
+    answer: String(left + right),
+  };
+}
+
 /* ========== App ========== */
 export default function App() {
   const [form, setForm] = useState(defaultForm);
@@ -121,6 +134,9 @@ export default function App() {
   const [step, setStep] = useState(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [captcha, setCaptcha] = useState(() => createCaptcha());
+  const [captchaInput, setCaptchaInput] = useState('');
+  const [captchaError, setCaptchaError] = useState('');
   const generationTimer = useRef(null);
 
   /* detect mobile width reactively */
@@ -166,10 +182,18 @@ export default function App() {
   }
 
   function submitForm() {
+    if (captchaInput.trim() !== captcha.answer) {
+      setCaptchaError('Please solve the security check correctly before creating the description.');
+      return;
+    }
+
+    setCaptchaError('');
     setCopied(false);
     setGenerated(null);
     setIsGenerating(true);
     clearTimeout(generationTimer.current);
+    setCaptchaInput('');
+    setCaptcha(createCaptcha());
     const submittedForm = { ...form };
     const desc = buildDescription(submittedForm);
     generationTimer.current = setTimeout(() => {
@@ -185,6 +209,9 @@ export default function App() {
     clearTimeout(generationTimer.current);
     setForm(defaultForm);
     setStep(1);
+    setCaptcha(createCaptcha());
+    setCaptchaInput('');
+    setCaptchaError('');
   }
 
   function goNext() { setStep((s) => Math.min(s + 1, 4)); }
@@ -239,10 +266,14 @@ export default function App() {
         <aside className={`sidebar${sidebarOpen ? ' open' : ''}`}>
           <div className="sidebar-header">
             <div className="brand-block">
-              <div className="brand-mark"><Sparkles size={22} /></div>
+              <img
+                className="brand-logo"
+                src="/brand/creative-prompt-writer-logo.png"
+                alt="Creative Prompt Writer logo"
+              />
               <div>
-                <strong>Prompt Description</strong>
-                <span>SMB creative planner</span>
+                <strong>Creative Prompt Writer</strong>
+                <span>Social media brief builder</span>
               </div>
             </div>
             {isMobile && (
@@ -277,7 +308,7 @@ export default function App() {
                 </button>
               )}
               <div>
-                <p className="eyebrow">Description Builder</p>
+                <p className="eyebrow">Creative Prompt Writer</p>
                 <h1>Create a ready-to-copy design brief for your business post</h1>
                 <p className="topbar-help">
                   Fill the simple choices below. The app will prepare a clear description you can paste into ChatGPT.
@@ -322,6 +353,7 @@ export default function App() {
                 ) : generated ? (
                   <>
                     <pre>{generated.description}</pre>
+                    <p className="output-note">{COPY_HINT}</p>
                     <div className="output-footer">
                       <button className="ghost-button" type="button" onClick={() => { setGenerated(null); setStep(1); }}>
                         <ChevronLeft size={18} /> Back to form
@@ -360,6 +392,42 @@ export default function App() {
                 <div className="form-grid">
                   {renderStepFields()}
                 </div>
+
+                {step === 4 ? (
+                  <div className="captcha-panel">
+                    <div>
+                      <p className="captcha-label">Quick security check</p>
+                      <strong>Solve this: {captcha.prompt}</strong>
+                    </div>
+                    <div className="captcha-controls">
+                      <input
+                        className="captcha-input"
+                        value={captchaInput}
+                        inputMode="numeric"
+                        placeholder="Type answer"
+                        onChange={(event) => {
+                          setCaptchaInput(event.target.value);
+                          if (captchaError) {
+                            setCaptchaError('');
+                          }
+                        }}
+                      />
+                      <button
+                        className="ghost-button captcha-refresh"
+                        type="button"
+                        onClick={() => {
+                          setCaptcha(createCaptcha());
+                          setCaptchaInput('');
+                          setCaptchaError('');
+                        }}
+                        aria-label="Refresh security check"
+                      >
+                        <RotateCw size={18} />
+                      </button>
+                    </div>
+                    {captchaError ? <p className="captcha-error">{captchaError}</p> : null}
+                  </div>
+                ) : null}
 
                 <div className="form-actions">
                   {step > 1 && (
@@ -410,7 +478,10 @@ export default function App() {
                       <div className="progress-bar"><span /></div>
                     </div>
                   ) : generated ? (
-                    <pre>{generated.description}</pre>
+                    <>
+                      <pre>{generated.description}</pre>
+                      <p className="output-note">{COPY_HINT}</p>
+                    </>
                   ) : (
                     <div className="output-empty">
                       <FileText size={34} />

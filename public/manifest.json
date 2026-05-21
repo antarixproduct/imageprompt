@@ -1,11 +1,11 @@
 {
-  "name": "SMB Prompt Description Generator",
-  "short_name": "PromptGen",
-  "description": "Generate ready-to-copy design briefs for social media posts",
+  "name": "Creative Prompt Writer",
+  "short_name": "CreativePrompt",
+  "description": "Create ready-to-copy social media design briefs with your brand details",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#eef3f1",
-  "theme_color": "#18342b",
+  "background_color": "#081224",
+  "theme_color": "#081224",
   "orientation": "portrait-primary",
   "icons": [
     {

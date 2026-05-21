@@ -3,6 +3,7 @@ const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/brand/creative-prompt-writer-logo.png',
   '/icons/icon-192.svg',
   '/icons/icon-512.svg',
 ];
