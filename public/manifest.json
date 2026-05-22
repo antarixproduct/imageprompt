@@ -1,7 +1,8 @@
+
 {
-  "name": "Creative Prompt Writer",
+  "name": "Likhwai.online",
   "short_name": "CreativePrompt",
-  "description": "Create ready-to-copy social media design briefs with your brand details",
+  "description": "Create a Free ready o copy image design prompt for your business",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#eef3f1",
