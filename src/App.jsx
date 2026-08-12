@@ -1519,7 +1519,13 @@ function ContactPage({ path, navigate }) {
               <Building2 className="contact-item-icon" size={20} />
               <div>
                 <strong>Operating Entity & Developer</strong>
-                <p>Insight Computers</p>
+                <p>
+                  Insight Computers (
+                  <a href={SITE.companyWebsite} target="_blank" rel="noopener noreferrer" className="text-link">
+                    insightcomputer.in <ExternalLink size={12} />
+                  </a>
+                  )
+                </p>
               </div>
             </div>
 

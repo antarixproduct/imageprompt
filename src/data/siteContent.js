@@ -2,9 +2,10 @@ export const SITE = {
   name: 'Likhwai.Online',
   productName: 'AI Marketing Prompt Builder',
   companyName: 'Insight Computers',
+  companyWebsite: 'https://insightcomputer.in',
   origin: 'https://likhwai.online',
   email: 'mail.insightcomputers@gmail.com',
-  address: 'GS Road, Guwahati, Assam, India - 781005',
+  address: 'Insight Computers, Basistha Chariali, Guwahati, Assam, India - 781029',
   supportHours: 'Monday - Saturday: 9:00 AM - 6:00 PM IST',
   description:
     'AI Marketing Prompt Builder & Prompt Engineering Platform developed by Insight Computers. Create high-converting AI marketing prompts for ChatGPT, Midjourney, Flux, and more without prompt engineering knowledge.',
