@@ -1,17 +1,271 @@
 export const SITE = {
   name: 'Likhwai.Online',
-  productName: 'Creative Prompt Writer',
+  productName: 'AI Marketing Prompt Builder',
+  companyName: 'Insight Computers',
   origin: 'https://likhwai.online',
   email: 'contact@likhwai.online',
   address: 'GS Road, Guwahati, Assam, India - 781005',
   supportHours: 'Monday - Saturday: 9:00 AM - 6:00 PM IST',
   description:
-    'Creative Prompt Writer helps small businesses create clear AI image prompt descriptions for social media posts, offers, announcements, and campaigns.',
+    'AI Marketing Prompt Builder & Prompt Engineering Platform developed by Insight Computers. Create high-converting AI marketing prompts for ChatGPT, Midjourney, Flux, and more without prompt engineering knowledge.',
   keywords:
-    'AI prompt writer, ChatGPT prompt generator, AI image prompt, social media prompt, small business marketing, Instagram post prompt',
+    'AI marketing prompt builder, ChatGPT prompt generator, AI image prompt engineer, Insight Computers, small business marketing, Midjourney prompt generator',
   logo: '/brand/creative-prompt-writer-logo.png',
   publisherId: 'pub-5843200435818403',
 };
+
+export const supportedAiModels = [
+  { name: 'ChatGPT / DALL-E 3', badge: 'Popular', desc: 'Best for combined text copy & visual creation' },
+  { name: 'Google Gemini', badge: 'Fast', desc: 'Great for multimodal marketing briefs' },
+  { name: 'Midjourney v6', badge: 'Photoreal', desc: 'Ultra-realistic commercial aesthetics' },
+  { name: 'Flux AI', badge: 'Text Accuracy', desc: 'Flawless typography & product packaging' },
+  { name: 'Ideogram 2.0', badge: 'Poster Design', desc: 'Precision graphic layout rendering' },
+  { name: 'Leonardo AI', badge: 'Creative', desc: 'Custom style presets & canvas editing' },
+  { name: 'Adobe Firefly', badge: 'Brand Safe', desc: 'Commercial asset generation' },
+  { name: 'Recraft AI', badge: 'Vector Art', desc: 'Brand vector graphics & icon design' },
+];
+
+export const heroCarouselItems = [
+  {
+    id: 1,
+    title: 'Gourmet Restaurant Grand Opening',
+    businessType: 'Restaurant',
+    image: '/brand/creative-prompt-writer-logo.png',
+    promptSnippet: '1:1 Instagram post. Subject: Gourmet wood-fired pizza with melting mozzarella and basil. Golden hour lighting. Headline: "GRAND OPENING - 20% OFF". Color palette: Warm terracotta and dark wood.',
+    badge: 'Restaurant',
+  },
+  {
+    id: 2,
+    title: 'Luxury Salon Bridal Glow Package',
+    businessType: 'Salon & Spa',
+    image: '/brand/creative-prompt-writer-logo.png',
+    promptSnippet: '4:5 Feed post. Subject: Elegant woman with silky balayage hair, soft natural window light, rose gold marble aesthetic. Headline: "BRIDAL GLOW PACKAGE". CTA: "Book Trial Session".',
+    badge: 'Salon',
+  },
+  {
+    id: 3,
+    title: 'Fitness Studio 14-Day Free Trial',
+    businessType: 'Gym & Fitness',
+    image: '/brand/creative-prompt-writer-logo.png',
+    promptSnippet: '9:16 Story Ad. Subject: High-energy athletic workout with kettlebells. Dramatic neon orange rim lighting on charcoal slate background. Text: "14 DAYS UNLIMITED PASS".',
+    badge: 'Gym',
+  },
+  {
+    id: 4,
+    title: 'Coaching Institute Admissions 2026',
+    businessType: 'Coaching Centre',
+    image: '/brand/creative-prompt-writer-logo.png',
+    promptSnippet: '1:1 Social Graphic. Subject: Motivated student studying in bright modern library. Corporate navy and gold trust palette. Headline: "ADMISSIONS OPEN FOR 2026 BATCH".',
+    badge: 'Education',
+  },
+  {
+    id: 5,
+    title: 'Luxury Real Estate Sunset Villa',
+    businessType: 'Real Estate',
+    image: '/brand/creative-prompt-writer-logo.png',
+    promptSnippet: '1:1 Property Post. Visual: Modern 2-story villa exterior at twilight with pool. Badge: "FOR SALE". Specs: "4 Beds | 3.5 Baths". Price: "$549,000". Headline: "Green Valley Estate".',
+    badge: 'Real Estate',
+  },
+];
+
+export const examplesGallery = [
+  {
+    id: 'ex-1',
+    category: 'Restaurant',
+    title: 'Wood-Fired Pizza Weekend Discount',
+    businessType: 'Restaurant',
+    prompt: 'Create a 1:1 Instagram feed design for an authentic Italian pizzeria. Visual: Close-up of a wood-fired Margherita pizza with melting mozzarella, fresh basil, and steam rising. Lighting: Warm amber ambient restaurant warmth. Headline: "WEEKEND SPECIAL - BUY 1 GET 1 50% OFF". Subheadline: "Valid Friday to Sunday". CTA Button: "Order Online Now". Brand colors: Terracotta (#C85A32), Cream (#F5F0EB), Charcoal (#2C1D18).',
+    explanation: 'Combines appetite warmth (steaming pizza, amber lighting) with urgency psychology (50% off weekend window) and clear CTA placement.',
+    marketingTips: ['Attach a photo of your actual signature dish when prompting ChatGPT', 'Keep headline text large so scrollers see the offer immediately'],
+  },
+  {
+    id: 'ex-2',
+    category: 'Salon',
+    title: 'Bridal Package Pre-Booking Offer',
+    businessType: 'Salon & Spa',
+    prompt: 'Promotional graphic for a luxury hair and beauty salon (4:5 ratio). Subject: Glowing bride with smooth balayage hair against soft rose gold and ivory marble background. Mood: Elegant, serene, premium self-care. Headline: "BRIDAL GLOW PACKAGE". Subheadline: "Free Trial Session Included". CTA: "Book Your Slot Today". Colors: Rose Gold (#B76E79), Ivory (#FFFDD0).',
+    explanation: 'Uses soft luxury aesthetics (rose gold, marble) to signal premium service quality for high-ticket bridal bookings.',
+    marketingTips: ['Specify exact hex colors for rose gold and ivory to prevent chaotic background hues', 'Include booking incentive like a free trial session'],
+  },
+  {
+    id: 'ex-3',
+    category: 'Gym',
+    title: 'New Year Transformation Challenge',
+    businessType: 'Gym & Fitness',
+    prompt: 'High-energy Facebook Ad (1:1 ratio) for a boutique gym. Subject: Athletic individual performing kettlebell exercise with dark charcoal slate and neon orange rim lighting. Headline: "NO JOINING FEE THIS WEEK". Subheadline: "7-Day Unlimited Free Trial". CTA: "Claim Your Free Pass". Colors: Charcoal Slate (#1E293B) and Neon Orange (#FF6B00).',
+    explanation: 'Uses high-contrast color scheme (neon orange on slate) to create energy and visual stopping power in fast mobile feeds.',
+    marketingTips: ['Use action verbs like "Claim" or "Start" for fitness CTAs', 'Keep background dark so neon text highlights stand out'],
+  },
+  {
+    id: 'ex-4',
+    category: 'Medical',
+    title: 'Family Dental Checkup Campaign',
+    businessType: 'Dental Clinic',
+    prompt: 'Clean, trustworthy social banner (1:1 ratio) for a family dental clinic. Subject: Smiling family illustration with clean medical cross accents. Colors: Deep Navy Blue (#1B365D) and Soft Teal (#00AEEF). Headline: "YOUR SMILE DESERVES THE BEST CARE". Subtext: "Complete Dental Exam & X-Ray for $49". CTA: "Schedule Exam".',
+    explanation: 'Employs blue and teal medical trust colors to alleviate patient anxiety and emphasize professional care.',
+    marketingTips: ['Highlight transparent pricing for introductory exams', 'Feature smiling faces to convey comfort'],
+  },
+  {
+    id: 'ex-5',
+    category: 'Fashion',
+    title: 'Autumn Fashion Flash Sale',
+    businessType: 'Fashion Boutique',
+    prompt: 'Vertical Instagram Story graphic (9:16 aspect ratio). Visual: Elegant model wearing an emerald green wool coat against a minimal beige plaster wall with soft shadow casting. Top Banner: "FLASH SALE - 30% OFF". Subheadline: "This Weekend Only". Bottom CTA: "Swipe Up to Shop". Palette: Emerald Green (#046307), Warm Beige (#E8D8C8).',
+    explanation: 'Optimized for vertical story viewing with clear top banner and bottom swipe-up action target.',
+    marketingTips: ['Use 9:16 ratio for Instagram Stories and Reels', 'Keep model pose natural to maintain boutique authenticity'],
+  },
+  {
+    id: 'ex-6',
+    category: 'Hotel',
+    title: 'Monsoon Getaway Special Package',
+    businessType: 'Hotel & Resort',
+    prompt: 'Promotional ad graphic (1:1 ratio) for a luxury hill resort. Image: Infinity pool overlooking misty green mountain valleys at sunrise. Headline: "MONSOON ESCAPE PACKAGE". Subtext: "3 Days & 2 Nights with Free Spa & Breakfast". Badge: "SAVE 35% TODAY". CTA: "Book Your Stay". Colors: Deep Forest (#18342B) and Gold (#D4AF37).',
+    explanation: 'Triggers wanderlust by pairing scenic nature photography with an all-inclusive stay package value.',
+    marketingTips: ['Mention key package inclusions (breakfast, spa) in subtext', 'Display percentage savings prominently'],
+  },
+  {
+    id: 'ex-7',
+    category: 'Bakery',
+    title: 'Fresh Artisan Sourdough Launch',
+    businessType: 'Bakery',
+    prompt: 'Rustic promotional graphic for an artisanal bakery. Subject: Freshly baked sourdough bread loaf resting on dark wooden board with flour dust and espresso cup. Headline: "BAKED FRESH EVERY MORNING". Subtext: "Organic Sourdough & Pastries". CTA: "Visit Our Bakery". Colors: Warm Terracotta (#C85A32), Cream (#F5F0EB), Dark Espresso (#2C1D18).',
+    explanation: 'Utilizes warm earthy tones and organic textures to convey handcrafted food quality.',
+    marketingTips: ['Mention morning availability to drive early foot traffic', 'Keep text simple to let fresh bread visual shine'],
+  },
+  {
+    id: 'ex-8',
+    category: 'Cafe',
+    title: 'Weekend Combo Offer',
+    businessType: 'Cafe',
+    prompt: 'Social media post for a neighborhood cafe. Visual: Top-down shot of two iced caramel lattes and a croissant on a clean white oak table with morning sunlight shadows. Headline: "WEEKEND COFFEE & BAKE COMBO". Offer: "Get Any Coffee + Pastry for $7.99". CTA: "Grab Yours Today". Colors: Coffee (#4A2C11), Milk Cream (#FFF8F0), Olive (#556B2F).',
+    explanation: 'Clean top-down aesthetic perfect for Instagram feeds promoting casual social meetups.',
+    marketingTips: ['Combine coffee with food to increase average ticket size', 'Use warm morning lighting'],
+  },
+  {
+    id: 'ex-9',
+    category: 'Festival',
+    title: 'Diwali Festive Offer Wish Banner',
+    businessType: 'Retail & Jewellery',
+    prompt: 'Festive celebration graphic for Diwali. Background: Rich royal blue background with glowing brass diyas and intricate gold rangoli patterns. Center Text: "WISHING YOU A PROSPEROUS & HAPPY DIWALI". Subtext: "Enjoy Flat 20% Off All Festive Collections". Footer: "Visit Our Store | Main Market". Colors: Gold (#FFD700), Royal Blue (#4169E1).',
+    explanation: 'Blends festive cultural appreciation with a subtle customer discount offer.',
+    marketingTips: ['Prioritize festive wishes first, business offer second', 'Use gold and deep blue for festive luxury'],
+  },
+  {
+    id: 'ex-10',
+    category: 'Retail',
+    title: 'Electronics Festival Exchange Sale',
+    businessType: 'Electronics Store',
+    prompt: 'High-impact promotional banner (1:1 ratio) for an electronics shop. Visual: Sleek modern smart TV and smartphone on dark metallic background with blue neon glow. Headline: "BIG FESTIVAL TECH SALE". Offer: "Up to $300 Off On Smart TVs + Easy EMI Available". CTA: "Shop In-Store or Online". Colors: Cobalt Blue (#0047AB), Electric Cyan (#00E5FF).',
+    explanation: 'Uses tech-focused neon highlights to communicate high-value gadget discounts and easy payment terms.',
+    marketingTips: ['Always highlight EMI/payment flexibility for big-ticket electronics', 'Use high-contrast blue/cyan neon tones'],
+  },
+];
+
+export const promptLibrary = [
+  {
+    id: 'lib-1',
+    title: 'Restaurant Discount Flash Sale',
+    category: 'Restaurant',
+    goal: 'Discount & Offer',
+    platform: 'Instagram Feed (1:1)',
+    promptText: 'Create a 1:1 Instagram post graphic for a restaurant offer. Visual: Sizzling gourmet dish on cast iron skillet with steam. Main Headline: "FLASH SALE - 25% OFF ALL ORDERS". Subheadline: "Tonight Only from 6 PM to 10 PM". CTA: "Order Online". Colors: Deep Crimson (#990000) and Gold (#FFD700).',
+  },
+  {
+    id: 'lib-2',
+    title: 'Cafe Weekend Morning Brunch',
+    category: 'Cafe',
+    goal: 'Menu Launch',
+    platform: 'Facebook Post (1:1)',
+    promptText: 'Facebook promotional graphic (1:1 ratio) for cafe brunch. Visual: Avocado toast with poached egg and cappuccino on rustic wooden table. Headline: "WEEKEND BRUNCH SPECIAL". Subheadline: "Freshly Brewed Mornings". CTA: "Reserve Your Table". Colors: Olive Green (#556B2F) and Cream (#FFFDD0).',
+  },
+  {
+    id: 'lib-3',
+    title: 'Salon Festival Hair Spa Package',
+    category: 'Salon',
+    goal: 'Festive Offer',
+    platform: 'Instagram Story (9:16)',
+    promptText: 'Vertical Instagram Story graphic (9:16 ratio) for a beauty salon. Visual: Glowing woman with glossy hair in soft natural light, rose gold accents. Headline: "FESTIVE GLOW PACKAGE". Subheadline: "Hair Spa + Facial Combo at 30% Off". CTA: "Tap to Book". Colors: Rose Gold (#B76E79) and Soft Ivory (#FFFFF0).',
+  },
+  {
+    id: 'lib-4',
+    title: 'Gym New Membership Drive',
+    category: 'Gym',
+    goal: 'Lead Generation',
+    platform: 'Instagram Feed (1:1)',
+    promptText: 'High-contrast 1:1 fitness ad graphic. Visual: Athletic individual training in moody gym with neon orange rim light. Headline: "START YOUR FITNESS JOURNEY". Subheadline: "First Month Just $19". CTA: "Claim Pass Now". Colors: Charcoal (#1E293B) and Neon Orange (#FF6B00).',
+  },
+  {
+    id: 'lib-5',
+    title: 'Medical Clinic Health Checkup',
+    category: 'Medical',
+    goal: 'Brand Awareness',
+    platform: 'Facebook Feed (1:1)',
+    promptText: 'Professional healthcare graphic (1:1 ratio). Visual: Caring doctor speaking with smiling patient in clean clinic setting. Headline: "COMPREHENSIVE HEALTH CHECKUP". Subheadline: "Preventive Care for Whole Family". CTA: "Call to Schedule". Colors: Navy Blue (#1B365D) and Teal (#00AEEF).',
+  },
+  {
+    id: 'lib-6',
+    title: 'Hotel Summer Vacation Package',
+    category: 'Hotel',
+    goal: 'Booking Offer',
+    platform: 'Instagram Feed (1:1)',
+    promptText: 'Luxury resort promotional graphic (1:1 ratio). Visual: Overwater villa in turquoise ocean at sunset. Headline: "SUMMER PARADISE ESCAPE". Subheadline: "Book 3 Nights & Get 1 Night Free". CTA: "Book Vacation". Colors: Turquoise (#40E0D0) and Sunset Gold (#FFD700).',
+  },
+  {
+    id: 'lib-7',
+    title: 'Real Estate Luxury Villa Launch',
+    category: 'Real Estate',
+    goal: 'Property Listing',
+    platform: 'Instagram Feed (1:1)',
+    promptText: '1:1 Real estate announcement post. Visual: Modern luxury villa exterior with swimming pool at twilight. Headline: "JUST LISTED IN GREEN VALLEY". Specs: "4 Beds | 4 Baths | Pool". Price: "$620,000". CTA: "Schedule Private Tour". Colors: Navy Blue (#0F172A) and White (#FFFFFF).',
+  },
+  {
+    id: 'lib-8',
+    title: 'Festival Wishes & Shopping Discount',
+    category: 'Festival',
+    goal: 'Greeting & Offer',
+    platform: 'WhatsApp / Story (9:16)',
+    promptText: 'Vertical 9:16 festival wish banner. Visual: Traditional decorative lamps and gold ornamental border. Text: "WISHING YOU A BLESSED FESTIVE SEASON". Subtext: "Enjoy 20% Off Storewide". Footer: "Visit Our Shop". Colors: Gold (#FFD700) and Royal Purple (#4B0082).',
+  },
+];
+
+export const insightProducts = [
+  {
+    id: 'prod-1',
+    name: 'AI Marketing Prompt Builder',
+    status: 'Live & Active',
+    badge: 'Flagship Tool',
+    description: 'AI Marketing Prompt Builder & Engineering Platform for small businesses to generate copy-ready visual design briefs.',
+    link: '/',
+  },
+  {
+    id: 'prod-2',
+    name: 'Insight SEO Brief Suite',
+    status: 'Coming Soon',
+    badge: 'In Development',
+    description: 'Automated SEO article brief & content outline generator designed for small business blogs and local ranking.',
+    link: '#',
+  },
+  {
+    id: 'prod-3',
+    name: 'Insight Social Post Strategist',
+    status: 'Coming Soon',
+    badge: 'In Development',
+    description: 'AI-powered 30-day social media content calendar planner with caption copy & visual prompt recommendations.',
+    link: '#',
+  },
+];
+
+export const templatesData = [
+  { title: 'Restaurant Offer & Discount', category: 'Restaurant', goal: 'Offer', difficulty: 'Beginner' },
+  { title: 'Cafe Weekend Brunch Special', category: 'Cafe', goal: 'Menu', difficulty: 'Beginner' },
+  { title: 'Salon Bridal & Glow Package', category: 'Salon', goal: 'Package', difficulty: 'Intermediate' },
+  { title: 'Gym 7-Day Free Trial Pass', category: 'Gym', goal: 'Lead Gen', difficulty: 'Beginner' },
+  { title: 'Medical Preventive Exam', category: 'Medical', goal: 'Trust', difficulty: 'Beginner' },
+  { title: 'Hotel Getaway Promo', category: 'Hotel', goal: 'Booking', difficulty: 'Intermediate' },
+  { title: 'Real Estate Property Listing', category: 'Real Estate', goal: 'Listing', difficulty: 'Advanced' },
+  { title: 'Festival Wish & Gift Offer', category: 'Festival', goal: 'Greeting', difficulty: 'Beginner' },
+];
+
 
 export const servicesData = [
   {
@@ -763,9 +1017,15 @@ export const blogPosts = [
 
 
 export const searchableRecords = [
-  { title: 'Creative Prompt Writer Tool', path: '/', type: 'Tool', description: SITE.description },
-  { title: 'Services', path: '/services', type: 'Page', description: 'Explore AI prompt briefing, copy guidance, and custom campaign prompt services by Likhwai.Online.' },
-  { title: 'Why Choose Us', path: '/why-us', type: 'Page', description: 'Discover why small businesses and marketers choose Creative Prompt Writer for AI image design briefs.' },
+  { title: 'AI Marketing Prompt Builder Tool', path: '/', type: 'Tool', description: SITE.description },
+  { title: 'Examples Gallery', path: '/examples', type: 'Gallery', description: 'Browse marketing poster examples created using prompts from our platform.' },
+  { title: 'Prompt Library', path: '/library', type: 'Library', description: 'Searchable collection of high-converting AI marketing prompt blueprints for small businesses.' },
+  { title: 'Templates', path: '/templates', type: 'Templates', description: 'Browse AI marketing prompt templates grouped by industry category and post goal.' },
+  { title: 'How It Works', path: '/how-it-works', type: 'Workflow', description: '8-step visual workflow for generating professional AI marketing prompts.' },
+  { title: 'Platform Features', path: '/features', type: 'Features', description: 'Explore the 8 core features of Likhwai.Online AI Marketing Prompt Platform.' },
+  { title: 'Pricing & SaaS Plans', path: '/pricing', type: 'Pricing', description: 'View Free, Pro, and Agency pricing plans for AI Marketing Prompt Builder.' },
+  { title: 'Services & Briefing Capabilities', path: '/services', type: 'Page', description: 'Explore AI prompt briefing, copy guidance, and custom campaign prompt services by Insight Computers.' },
+  { title: 'Why Choose Us', path: '/why-us', type: 'Page', description: 'Discover why small businesses and marketers choose Likhwai.Online for AI image design briefs.' },
   ...policyPages.map((page) => ({
     title: page.title,
     path: `/${page.slug}`,

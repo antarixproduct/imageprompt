@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
+  ArrowRight,
   Award,
   BadgeCheck,
   Check,
@@ -8,23 +9,39 @@ import {
   ChevronRight,
   Clock,
   Copy,
+  Download,
+  Edit3,
   ExternalLink,
+  Eye,
   FileText,
+  Filter,
+  Grid,
+  Heart,
   HelpCircle,
   History,
   Home,
+  Image as ImageIcon,
   Layers,
+  LayoutGrid,
   Lightbulb,
+  ListFilter,
   Mail,
   MapPin,
   Menu,
+  MessageSquare,
+  Pause,
+  Play,
   RefreshCw,
   RotateCw,
   Search,
   Send,
+  Share2,
   ShieldCheck,
   Sparkles,
+  Star,
+  Tag,
   Users,
+  Wand2,
   X,
   Zap,
 } from 'lucide-react';
@@ -32,10 +49,16 @@ import { businessRules, businessTypes, defaultForm, optionMappings } from './dat
 import {
   SITE,
   blogPosts,
+  examplesGallery,
   faqItems,
+  heroCarouselItems,
+  insightProducts,
   policyPages,
+  promptLibrary,
   searchableRecords,
   servicesData,
+  supportedAiModels,
+  templatesData,
   testimonials,
   toolGuides,
   whyUsData,
@@ -88,14 +111,20 @@ const STEP_FIELDS = {
 };
 
 const STEP_TITLES = {
-  1: { title: 'Your business', desc: 'Tell us about your business' },
-  2: { title: 'Post purpose', desc: 'What do you want to promote?' },
-  3: { title: 'Look and feel', desc: 'Choose the visual style' },
-  4: { title: 'Text to show', desc: 'Enter the copy for your design' },
+  1: { title: 'Business Info', desc: 'Tell us about your business & niche' },
+  2: { title: 'Campaign Goal', desc: 'Define your promotion purpose & target feed' },
+  3: { title: 'Visual & Style', desc: 'Configure mood, layout density & focal point' },
+  4: { title: 'Copy & Content', desc: 'Specify headlines, offer details & brand colors' },
 };
 
-const COPY_HINT = 'Copy the description and paste in ChatGPT with your brand logo or other images.';
+const COPY_HINT = 'Copy this prompt and paste into ChatGPT, Midjourney, Flux, Gemini, or Ideogram with your brand logo.';
 const ROUTE_TITLES = new Map([
+  ['/examples', 'Examples Gallery'],
+  ['/library', 'Prompt Library'],
+  ['/templates', 'Templates'],
+  ['/how-it-works', 'How It Works'],
+  ['/features', 'Platform Features'],
+  ['/pricing', 'Pricing & Plans'],
   ['/services', 'Services'],
   ['/why-us', 'Why Choose Us'],
   ...policyPages.map((page) => [`/${page.slug}`, page.title]),
@@ -334,6 +363,184 @@ function AdSlot({ label = 'Advertisement' }) {
   );
 }
 
+function downloadTxtFile(filename, text) {
+  const element = document.createElement('a');
+  const file = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  element.href = URL.createObjectURL(file);
+  element.download = filename;
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+
+function HeroCarousel() {
+  const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % heroCarouselItems.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const active = heroCarouselItems[index];
+
+  return (
+    <section className="carousel-section" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+      <div className="carousel-header-row">
+        <div>
+          <span className="eyebrow">Visual Proof</span>
+          <h2>Examples Created Using Prompts from Our Platform</h2>
+        </div>
+        <div className="carousel-controls">
+          <button
+            className="carousel-btn"
+            onClick={() => setIndex((prev) => (prev - 1 + heroCarouselItems.length) % heroCarouselItems.length)}
+            aria-label="Previous example"
+            type="button"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            className="carousel-btn"
+            onClick={() => setIndex((prev) => (prev + 1) % heroCarouselItems.length)}
+            aria-label="Next example"
+            type="button"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </div>
+
+      <div className="carousel-card">
+        <div className="carousel-preview-box">
+          <div className="carousel-badge">{active.badge}</div>
+          <div className="poster-mockup">
+            <Sparkles size={36} className="poster-icon" />
+            <div className="poster-title-text">{active.title}</div>
+            <span className="poster-tag">Prompt Output Preview</span>
+          </div>
+        </div>
+        <div className="carousel-info-box">
+          <span className="carousel-meta-tag">{active.businessType} Campaign</span>
+          <h3>{active.title}</h3>
+          <p className="carousel-snippet">"{active.promptSnippet}"</p>
+          <div className="carousel-footer-note">
+            <BadgeCheck size={16} /> <span>Generated with Likhwai.Online Marketing Prompt Architecture</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="carousel-dots">
+        {heroCarouselItems.map((item, i) => (
+          <button
+            key={item.id}
+            className={`carousel-dot${i === index ? ' active' : ''}`}
+            onClick={() => setIndex(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            type="button"
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function SupportedModelsBar() {
+  return (
+    <section className="models-section">
+      <div className="models-header">
+        <span className="eyebrow">Universal AI Compatibility</span>
+        <h2>Compatible with All Leading AI Image Generators</h2>
+        <p>Copy structured prompts directly from our platform into your favorite AI tool.</p>
+      </div>
+      <div className="models-grid">
+        {supportedAiModels.map((model) => (
+          <div className="model-card" key={model.name}>
+            <div className="model-card-top">
+              <strong>{model.name}</strong>
+              <span className="model-badge">{model.badge}</span>
+            </div>
+            <p>{model.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MarketingSummary({ form }) {
+  const colors = form.brandColors || 'Custom Hex / Niche Match';
+  const tone = form.brandTone || 'Professional & Inviting';
+  const cta = form.cta || 'Contact / Visit Store';
+  const focus = form.visualFocalPoint || 'Hero Product & Special Offer';
+
+  return (
+    <div className="marketing-summary-card">
+      <div className="summary-header">
+        <Sparkles size={20} className="summary-sparkle" />
+        <div>
+          <h3>AI Marketing Strategy Analysis</h3>
+          <p>Key parameters extracted from your campaign brief before prompt generation</p>
+        </div>
+      </div>
+      <div className="summary-grid">
+        <div className="summary-item">
+          <span className="summary-label">Business Category:</span>
+          <strong>{form.businessType}</strong>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">Post Goal:</span>
+          <strong>{form.postGoal}</strong>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">Target Audience:</span>
+          <strong>{form.targetAudience}</strong>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">Visual Focus:</span>
+          <strong>{focus}</strong>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">Recommended Colors:</span>
+          <strong>{colors}</strong>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">Marketing Personality:</span>
+          <strong>{tone}</strong>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">Call To Action:</span>
+          <strong>{cta}</strong>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">Suggested AI Models:</span>
+          <strong>ChatGPT, Midjourney, Flux, Gemini</strong>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function fieldPlaceholder(name) {
+  const map = {
+    businessName: 'Example: Green Leaf Cafe',
+    businessWebsite: 'Example: https://greenleafcafe.com',
+    businessAddress: 'Example: GS Road, Guwahati',
+    brandColors: 'Example: green, cream, charcoal',
+    headline: 'Example: 20% Off Weekend Combo',
+    subheadline: 'Example: Fresh meals for family evenings',
+    offerDetails: 'Example: Valid till Sunday',
+    cta: 'Example: Book Now',
+    contactInfo: 'Example: 98765 43210',
+    highlights: 'Example: fresh ingredients, free delivery, family pack',
+    avoid: 'Example: avoid dark colors, avoid too much text',
+  };
+  return map[name] ?? '';
+}
+
 function ToolPage({ navigate }) {
   const [form, setForm] = useState(defaultForm);
   const [history, setHistory] = useState(() => {
@@ -343,6 +550,8 @@ function ToolPage({ navigate }) {
   const [copied, setCopied] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generated, setGenerated] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedPrompt, setEditedPrompt] = useState('');
   const [step, setStep] = useState(1);
   const [captcha, setCaptcha] = useState(() => createCaptcha());
   const [captchaInput, setCaptchaInput] = useState('');
@@ -354,11 +563,11 @@ function ToolPage({ navigate }) {
   const stepInfo = STEP_TITLES[step];
 
   useSeo({
-    title: 'Free AI Image Prompt Description Generator',
+    title: 'AI Marketing Prompt Builder & Engineering Platform',
     description:
-      'Create structured AI image prompt descriptions for small business social media posts, offers, festive wishes, announcements, and marketing campaigns.',
+      'Generate high-quality marketing prompts for ChatGPT, Midjourney, Flux, and AI image generators without learning prompt engineering. Developed by Insight Computers.',
     path: '/',
-    schema: pageSchema('Free AI Image Prompt Description Generator', '/', SITE.description, [
+    schema: pageSchema('AI Marketing Prompt Builder & Engineering Platform', '/', SITE.description, [
       {
         '@context': 'https://schema.org',
         '@type': 'SoftwareApplication',
@@ -367,6 +576,7 @@ function ToolPage({ navigate }) {
         operatingSystem: 'Web',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
         description: SITE.description,
+        author: { '@type': 'Organization', name: SITE.companyName },
       },
       {
         '@context': 'https://schema.org',
@@ -401,23 +611,25 @@ function ToolPage({ navigate }) {
 
   async function copyDescription() {
     if (!generated) return;
-    await navigator.clipboard.writeText(generated.description);
+    const textToCopy = isEditing ? editedPrompt : generated.description;
+    await navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setHistory((prev) => [
-      { id: crypto.randomUUID(), form: generated.form, description: generated.description, createdAt: new Date().toISOString() },
+      { id: crypto.randomUUID(), form: generated.form, description: textToCopy, createdAt: new Date().toISOString() },
       ...prev,
     ].slice(0, 8));
   }
 
   function submitForm() {
     if (captchaInput.trim() !== captcha.answer) {
-      setCaptchaError('Please solve the security check correctly before creating the description.');
+      setCaptchaError('Please solve the security check correctly before creating the prompt.');
       return;
     }
 
     setCaptchaError('');
     setCopied(false);
     setGenerated(null);
+    setIsEditing(false);
     setIsGenerating(true);
     clearTimeout(generationTimer.current);
     setCaptchaInput('');
@@ -426,14 +638,17 @@ function ToolPage({ navigate }) {
     const desc = buildDescription(submittedForm);
     generationTimer.current = setTimeout(() => {
       setGenerated({ form: submittedForm, description: desc });
+      setEditedPrompt(desc);
       setIsGenerating(false);
-    }, 5000);
+    }, 4000);
   }
 
   function resetForm() {
     setCopied(false);
     setIsGenerating(false);
     setGenerated(null);
+    setIsEditing(false);
+    setEditedPrompt('');
     clearTimeout(generationTimer.current);
     setForm(defaultForm);
     setStep(1);
@@ -471,18 +686,31 @@ function ToolPage({ navigate }) {
 
   return (
     <>
-      <header className="topbar">
+      <header className="topbar saas-hero">
         <div>
-          <p className="eyebrow">Likhwai.Online - AI Creative Architecture</p>
-          <h1>Free Ready-to-Copy AI Image Prompt Generator for Business Marketing</h1>
+          <div className="product-by-badge">
+            <Sparkles size={14} /> A Product by Insight Computers
+          </div>
+          <h1>Create Professional AI Marketing Prompts in Seconds</h1>
           <p className="topbar-help">
-            Turn raw campaign offers, discounts, announcements, and festival wishes into copy-ready, structured visual design briefs. Built specifically for ChatGPT, Midjourney, DALL-E 3, and Flux to generate professional social media artwork without design jargon.
+            Generate high-quality marketing prompts for ChatGPT, Midjourney, Flux, and other AI image generators without learning prompt engineering. Position your business with expert marketing analysis and conversion psychology.
           </p>
+          <div className="hero-cta-buttons">
+            <a href="#create" className="primary-button hero-action-btn">
+              <Wand2 size={18} /> Generate Prompt Now
+            </a>
+            <button className="ghost-button hero-action-btn" type="button" onClick={resetForm}>
+              <RefreshCw size={18} /> Reset Form
+            </button>
+            <Link to="/examples" navigate={navigate} className="ghost-button hero-action-btn">
+              <Eye size={18} /> Browse Examples
+            </Link>
+          </div>
         </div>
-        <button className="ghost-button" type="button" onClick={resetForm}>
-          <RefreshCw size={18} /> Reset Generator
-        </button>
       </header>
+
+      <HeroCarousel />
+      <SupportedModelsBar />
 
       <div className="content-grid" id="create">
         <section className="form-panel" aria-labelledby="generator-heading">
@@ -503,7 +731,7 @@ function ToolPage({ navigate }) {
           <div className="section-heading">
             <BadgeCheck size={19} />
             <div>
-              <h2 id="generator-heading">{stepInfo.title}</h2>
+              <h2 id="generator-heading">Step {step}: {stepInfo.title}</h2>
               <p>{stepInfo.desc}</p>
             </div>
           </div>
@@ -553,12 +781,12 @@ function ToolPage({ navigate }) {
             ) : null}
             {step < 4 ? (
               <button className="primary-button" type="button" onClick={() => setStep((current) => Math.min(current + 1, 4))}>
-                Next <ChevronRight size={18} />
+                Next Step <ChevronRight size={18} />
               </button>
             ) : (
               <button className="primary-button submit-button" type="button" onClick={submitForm} disabled={isGenerating}>
                 <Sparkles size={18} />
-                {isGenerating ? 'Preparing...' : 'Create Description'}
+                {isGenerating ? 'Analyzing Campaign...' : 'Generate Marketing Prompt'}
               </button>
             )}
           </div>
@@ -567,16 +795,17 @@ function ToolPage({ navigate }) {
         <section className="output-panel" aria-live="polite">
           <div className="output-header">
             <div>
-              <p className="eyebrow">Generated Output</p>
-              <h2>Your description</h2>
+              <p className="eyebrow">SaaS Engine Output</p>
+              <h2>Generated Prompt & Strategy</h2>
             </div>
             {generated && !isGenerating ? (
-              <button className="primary-button" type="button" onClick={copyDescription}>
+              <button className="primary-button copy-large-btn" type="button" onClick={copyDescription}>
                 {copied ? <BadgeCheck size={18} /> : <Copy size={18} />}
-                {copied ? 'Copied' : 'Copy'}
+                {copied ? 'Prompt Copied!' : 'Copy Prompt'}
               </button>
             ) : null}
           </div>
+
           {isGenerating ? (
             <div className="writing-state" role="status">
               <div className="writer-scene" aria-hidden="true">
@@ -589,28 +818,69 @@ function ToolPage({ navigate }) {
                   <span />
                 </div>
               </div>
-              <h3>Writing your description</h3>
-              <p>Preparing a clear brief from your business details and post goal.</p>
+              <h3>Analyzing Marketing & Engineering Prompt</h3>
+              <p>Extracting consumer psychology cues, visual hierarchy, and exact typography bounds...</p>
               <div className="progress-bar">
                 <span />
               </div>
             </div>
           ) : generated ? (
-            <>
-              <pre>{generated.description}</pre>
+            <div className="generated-content-container">
+              <MarketingSummary form={generated.form} />
+
+              <div className="prompt-output-wrapper">
+                <div className="prompt-box-header">
+                  <strong>Generated AI Prompt Brief</strong>
+                  <div className="prompt-box-actions">
+                    <button
+                      className="ghost-button mini-btn"
+                      onClick={() => setIsEditing(!isEditing)}
+                      type="button"
+                    >
+                      <Edit3 size={14} /> {isEditing ? 'Done Editing' : 'Edit Prompt'}
+                    </button>
+                    <button
+                      className="ghost-button mini-btn"
+                      onClick={submitForm}
+                      type="button"
+                    >
+                      <RotateCw size={14} /> Regenerate
+                    </button>
+                    <button
+                      className="ghost-button mini-btn"
+                      onClick={() => downloadTxtFile('ai-marketing-prompt.txt', isEditing ? editedPrompt : generated.description)}
+                      type="button"
+                    >
+                      <Download size={14} /> Download TXT
+                    </button>
+                  </div>
+                </div>
+
+                {isEditing ? (
+                  <textarea
+                    className="editable-prompt-textarea"
+                    rows={12}
+                    value={editedPrompt}
+                    onChange={(e) => setEditedPrompt(e.target.value)}
+                  />
+                ) : (
+                  <pre className="generated-prompt-text">{editedPrompt || generated.description}</pre>
+                )}
+              </div>
+
               <p className="output-note">{COPY_HINT}</p>
-            </>
+            </div>
           ) : (
             <div className="output-empty">
-              <FileText size={34} />
-              <h3>Your description will appear here</h3>
-              <p>Complete the choices and press Create Description. You can copy it after it is ready.</p>
+              <Wand2 size={38} />
+              <h3>Your AI Marketing Prompt Will Appear Here</h3>
+              <p>Complete the guided choices on the left and click Generate. Receive a structured prompt with copy, strategy analysis, and download options.</p>
             </div>
           )}
         </section>
       </div>
 
-      <AdSlot label="Advertisement space below tool introduction" />
+      <AdSlot label="Advertisement space below prompt generator" />
       <ContentSections navigate={navigate} />
       <RecentGuides navigate={navigate} />
       <Testimonials />
@@ -620,21 +890,468 @@ function ToolPage({ navigate }) {
   );
 }
 
-function fieldPlaceholder(name) {
-  const map = {
-    businessName: 'Example: Green Leaf Cafe',
-    businessWebsite: 'Example: https://greenleafcafe.com',
-    businessAddress: 'Example: GS Road, Guwahati',
-    brandColors: 'Example: green, cream, charcoal',
-    headline: 'Example: 20% Off Weekend Combo',
-    subheadline: 'Example: Fresh meals for family evenings',
-    offerDetails: 'Example: Valid till Sunday',
-    cta: 'Example: Book Now',
-    contactInfo: 'Example: 98765 43210',
-    highlights: 'Example: fresh ingredients, free delivery, family pack',
-    avoid: 'Example: avoid dark colors, avoid too much text',
-  };
-  return map[name] ?? '';
+function GalleryPage({ path, navigate }) {
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [copiedId, setCopiedId] = useState(null);
+
+  const categories = ['All', 'Restaurant', 'Salon', 'Gym', 'Medical', 'Fashion', 'Hotel', 'Bakery', 'Cafe', 'Festival', 'Retail'];
+  const filtered = activeCategory === 'All' ? examplesGallery : examplesGallery.filter((item) => item.category === activeCategory);
+
+  const description = 'Browse marketing poster examples created using AI image prompts generated by Likhwai.Online platform.';
+
+  useSeo({
+    title: 'Examples Gallery',
+    description,
+    path,
+    schema: pageSchema('Examples Gallery', path, description),
+  });
+
+  async function copyPrompt(id, text) {
+    await navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2500);
+  }
+
+  return (
+    <ArticleShell
+      title="Marketing Poster Examples Gallery"
+      description="Real poster concepts and copy-ready AI prompts generated by our platform for ChatGPT, Midjourney, Flux, and Ideogram."
+      path={path}
+      navigate={navigate}
+    >
+      <div className="category-filter-bar">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            className={`filter-chip${activeCategory === cat ? ' active' : ''}`}
+            onClick={() => setActiveCategory(cat)}
+            type="button"
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <div className="gallery-grid">
+        {filtered.map((item) => (
+          <article className="gallery-card" key={item.id}>
+            <div className="gallery-card-header">
+              <span className="service-deliverable">{item.businessType}</span>
+              <h3>{item.title}</h3>
+            </div>
+            <div className="prompt-preview-box">
+              <pre>{item.prompt}</pre>
+              <button className="primary-button copy-mini" onClick={() => copyPrompt(item.id, item.prompt)} type="button">
+                {copiedId === item.id ? <Check size={16} /> : <Copy size={16} />}
+                {copiedId === item.id ? 'Copied!' : 'Copy Prompt'}
+              </button>
+            </div>
+            <div className="gallery-strategy-box">
+              <strong>Prompt Engineering & Psychology Strategy:</strong>
+              <p>{item.explanation}</p>
+            </div>
+            <div className="gallery-tips-box">
+              <strong>Actionable Tips:</strong>
+              <ul>
+                {item.marketingTips.map((tip, idx) => (
+                  <li key={idx}>{tip}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <AdSlot label="Advertisement space on Gallery page" />
+    </ArticleShell>
+  );
+}
+
+function LibraryPage({ path, navigate }) {
+  const [search, setSearch] = useState('');
+  const [copiedId, setCopiedId] = useState(null);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return promptLibrary;
+    return promptLibrary.filter((item) =>
+      `${item.title} ${item.category} ${item.goal} ${item.promptText}`.toLowerCase().includes(q)
+    );
+  }, [search]);
+
+  const description = 'Searchable collection of high-converting AI marketing prompt blueprints for local business campaigns.';
+
+  useSeo({
+    title: 'Prompt Library',
+    description,
+    path,
+    schema: pageSchema('Prompt Library', path, description),
+  });
+
+  async function copyPrompt(id, text) {
+    await navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2500);
+  }
+
+  return (
+    <ArticleShell
+      title="AI Marketing Prompt Library"
+      description="Search pre-engineered prompt blueprints for instant promotional posts across 20+ industries."
+      path={path}
+      navigate={navigate}
+    >
+      <label className="search-box">
+        <Search size={18} />
+        <input
+          value={search}
+          placeholder="Search blueprints by niche (e.g. Restaurant, Salon, Discount, Festival, Gym)"
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </label>
+
+      <div className="library-grid">
+        {filtered.map((item) => (
+          <article className="library-card" key={item.id}>
+            <div className="library-card-top">
+              <div>
+                <span className="result-type">{item.category} • {item.goal}</span>
+                <h3>{item.title}</h3>
+              </div>
+              <span className="platform-tag">{item.platform}</span>
+            </div>
+            <pre className="library-prompt-box">{item.promptText}</pre>
+            <div className="library-card-bottom">
+              <button className="primary-button" onClick={() => copyPrompt(item.id, item.promptText)} type="button">
+                {copiedId === item.id ? <Check size={16} /> : <Copy size={16} />}
+                {copiedId === item.id ? 'Copied to Clipboard' : 'Copy Blueprint Prompt'}
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <AdSlot label="Advertisement space on Prompt Library page" />
+    </ArticleShell>
+  );
+}
+
+function TemplatesPage({ path, navigate }) {
+  const description = 'Browse AI marketing prompt templates grouped by industry category and campaign goals.';
+
+  useSeo({
+    title: 'Templates',
+    description,
+    path,
+    schema: pageSchema('Templates', path, description),
+  });
+
+  return (
+    <ArticleShell
+      title="Industry Prompt Templates"
+      description="Pre-configured marketing blueprints optimized for high conversion across popular business niches."
+      path={path}
+      navigate={navigate}
+    >
+      <div className="templates-grid">
+        {templatesData.map((tpl) => (
+          <article className="info-card template-card" key={tpl.title}>
+            <div className="template-badge">{tpl.difficulty}</div>
+            <h3>{tpl.title}</h3>
+            <p><strong>Niche:</strong> {tpl.category} | <strong>Goal:</strong> {tpl.goal}</p>
+            <Link to="/" navigate={navigate} className="primary-button service-action">
+              Load into Generator <ChevronRight size={16} />
+            </Link>
+          </article>
+        ))}
+      </div>
+
+      <AdSlot label="Advertisement space on Templates page" />
+    </ArticleShell>
+  );
+}
+
+function HowItWorksPage({ path, navigate }) {
+  const description = 'Understand the 8-step visual workflow for creating professional AI marketing prompts with Likhwai.Online.';
+
+  useSeo({
+    title: 'How It Works',
+    description,
+    path,
+    schema: pageSchema('How It Works', path, description),
+  });
+
+  const steps = [
+    { num: 'Step 1', title: 'Choose Business Type', desc: 'Select from 23+ business categories (Restaurant, Salon, Gym, Dental, etc.)' },
+    { num: 'Step 2', title: 'Choose Marketing Goal', desc: 'Define your post purpose (Flash Sale, Festival Wish, Admission Open, Grand Opening)' },
+    { num: 'Step 3', title: 'Fill Campaign Details', desc: 'Enter headline copy, subhead, discount value, contact details, and brand colors' },
+    { num: 'Step 4', title: 'AI Marketing Analysis', desc: 'Our engine extracts consumer psychology cues, visual focal points, and typography rules' },
+    { num: 'Step 5', title: 'Professional Prompt Generated', desc: 'A clean, copy-ready visual prompt brief is formatted for multimodal AI engines' },
+    { num: 'Step 6', title: 'Copy Prompt in One Click', desc: 'Use the one-click copy button or download as .TXT file to your device' },
+    { num: 'Step 7', title: 'Paste into ChatGPT or Midjourney', desc: 'Paste into ChatGPT, Midjourney, Flux, or Ideogram with your transparent logo' },
+    { num: 'Step 8', title: 'Generate Your Marketing Creative', desc: 'Receive high-converting, professional marketing artwork ready for publishing' },
+  ];
+
+  return (
+    <ArticleShell
+      title="How Likhwai.Online Works"
+      description="From raw business offer to high-converting AI marketing creative in 8 simple steps."
+      path={path}
+      navigate={navigate}
+    >
+      <div className="workflow-timeline">
+        {steps.map((s, idx) => (
+          <div className="timeline-step" key={s.num}>
+            <div className="timeline-badge">{s.num}</div>
+            <div className="timeline-content">
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+            </div>
+            {idx < steps.length - 1 ? <div className="timeline-connector"><ArrowRight size={18} /></div> : null}
+          </div>
+        ))}
+      </div>
+
+      <div className="cta-box">
+        <h3>Ready to Create Your First Marketing Prompt?</h3>
+        <p>Zero prompt engineering experience required. 100% Free to use.</p>
+        <Link to="/" navigate={navigate} className="primary-button">
+          Open AI Prompt Builder <Sparkles size={16} />
+        </Link>
+      </div>
+
+      <AdSlot label="Advertisement space on How It Works page" />
+    </ArticleShell>
+  );
+}
+
+function FeaturesPage({ path, navigate }) {
+  const description = 'Explore the 8 core features of Likhwai.Online AI Marketing Prompt Platform.';
+
+  useSeo({
+    title: 'Platform Features',
+    description,
+    path,
+    schema: pageSchema('Platform Features', path, description),
+  });
+
+  const features = [
+    { title: 'AI Marketing Analysis', desc: 'Extracts campaign intent, emotional triggers, and audience parameters automatically.' },
+    { title: 'Prompt Engineering', desc: 'Converts plain business input into structured visual directions adhering to multimodal LLM rules.' },
+    { title: 'Industry Templates', desc: 'Tailored prompt blueprints for 23+ local business categories.' },
+    { title: 'Festival Campaigns', desc: 'Culturally authentic greetings combined with elegant promotional discounts.' },
+    { title: 'Marketing Psychology', desc: 'Incorporates urgency, social proof, scarcity, and authority visual triggers.' },
+    { title: 'One-Click Copy & TXT Download', desc: 'Instant clipboard copying and text file downloads for easy team sharing.' },
+    { title: 'AI Model Optimization', desc: 'Parameters tailored for ChatGPT, Midjourney v6, Flux, and Ideogram.' },
+    { title: 'SEO Friendly Structure', desc: 'Clean layout bounds, brand logo attachment prompts, and mobile ratio rules.' },
+  ];
+
+  return (
+    <ArticleShell
+      title="Platform Capabilities & Features"
+      description="Built for business owners, marketers, and agencies needing fast, reliable AI design directions."
+      path={path}
+      navigate={navigate}
+    >
+      <div className="info-grid two">
+        {features.map((feat) => (
+          <article className="info-card" key={feat.title}>
+            <CheckCircle2 size={24} className="feature-icon" />
+            <h3>{feat.title}</h3>
+            <p>{feat.desc}</p>
+          </article>
+        ))}
+      </div>
+
+      <AdSlot label="Advertisement space on Features page" />
+    </ArticleShell>
+  );
+}
+
+function PricingPage({ path, navigate }) {
+  const description = 'View Free, Pro, and Agency pricing plans for Likhwai.Online AI Marketing Prompt Platform.';
+
+  useSeo({
+    title: 'Pricing & SaaS Plans',
+    description,
+    path,
+    schema: pageSchema('Pricing & SaaS Plans', path, description),
+  });
+
+  return (
+    <ArticleShell
+      title="Simple, Accessible Pricing"
+      description="Likhwai.Online is currently 100% Free. Premium SaaS plans are coming soon for advanced team features."
+      path={path}
+      navigate={navigate}
+    >
+      <div className="pricing-grid">
+        <div className="pricing-card active">
+          <span className="pricing-tag">Current Plan</span>
+          <h3>Free Forever</h3>
+          <div className="pricing-price">$0 <span>/ month</span></div>
+          <p>Perfect for local small business owners, freelancers, and independent creators.</p>
+          <ul>
+            <li><Check size={16} /> Unlimited Prompt Generation</li>
+            <li><Check size={16} /> All 23+ Business Categories</li>
+            <li><Check size={16} /> One-Click Copy & TXT Download</li>
+            <li><Check size={16} /> Local Browser History</li>
+            <li><Check size={16} /> Ad-Supported Access</li>
+          </ul>
+          <Link to="/" navigate={navigate} className="primary-button">Use Free Plan</Link>
+        </div>
+
+        <div className="pricing-card">
+          <span className="pricing-tag coming-soon">Coming Soon</span>
+          <h3>Pro Marketer</h3>
+          <div className="pricing-price">$19 <span>/ month</span></div>
+          <p>For growing brands and professional marketers needing saved templates.</p>
+          <ul>
+            <li><Check size={16} /> Everything in Free</li>
+            <li><Check size={16} /> Custom Brand Asset Profiles</li>
+            <li><Check size={16} /> Saved Template Collections</li>
+            <li><Check size={16} /> Ad-Free Experience</li>
+            <li><Check size={16} /> Priority Support</li>
+          </ul>
+          <button className="ghost-button" disabled type="button">Coming Soon</button>
+        </div>
+
+        <div className="pricing-card">
+          <span className="pricing-tag coming-soon">Coming Soon</span>
+          <h3>Agency Team</h3>
+          <div className="pricing-price">$49 <span>/ month</span></div>
+          <p>For marketing agencies handling multi-client campaign portfolios.</p>
+          <ul>
+            <li><Check size={16} /> Everything in Pro</li>
+            <li><Check size={16} /> 5 Team Member Seats</li>
+            <li><Check size={16} /> Client Workspace Management</li>
+            <li><Check size={16} /> Custom API Export Options</li>
+            <li><Check size={16} /> Dedicated Account Manager</li>
+          </ul>
+          <button className="ghost-button" disabled type="button">Coming Soon</button>
+        </div>
+      </div>
+
+      <AdSlot label="Advertisement space on Pricing page" />
+    </ArticleShell>
+  );
+}
+
+function AboutPage({ path, navigate }) {
+  const description = 'Learn about Likhwai.Online, developed and maintained by Insight Computers, building AI-powered SaaS platforms for businesses.';
+
+  useSeo({
+    title: 'About Us',
+    description,
+    path,
+    schema: pageSchema('About Us', path, description, [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'AboutPage',
+        name: 'About Likhwai.Online',
+        description,
+        publisher: { '@type': 'Organization', name: SITE.companyName, url: SITE.origin },
+      },
+    ]),
+  });
+
+  return (
+    <ArticleShell
+      title="About Likhwai.Online"
+      description="A flagship AI marketing platform designed, developed, and maintained by Insight Computers."
+      path={path}
+      navigate={navigate}
+    >
+      <section className="about-company-hero">
+        <div className="company-badge-pill">
+          <Sparkles size={16} /> Developed by Insight Computers
+        </div>
+        <h2>Building AI-Powered SaaS Products for Modern Businesses</h2>
+        <p>
+          Likhwai.Online is officially created and operated by <strong>Insight Computers</strong>. Our mission is to engineer practical, intuitive, and accessible AI software tools that simplify digital marketing and creative workflows for small businesses, freelancers, and agencies worldwide.
+        </p>
+      </section>
+
+      <section className="about-hero-section">
+        <div className="about-grid">
+          <div className="about-card">
+            <span className="eyebrow">Our Mission</span>
+            <h2>Democratizing Professional AI Prompt Architecture</h2>
+            <p>
+              We bridge the gap between business owners' marketing goals and complex AI prompt engineering requirements. Instead of forcing users to learn technical jargon like "octane render" or "focal length", our platform asks plain business questions and generates structured visual directions that ChatGPT, Midjourney, and Flux parse with 100% accuracy.
+            </p>
+          </div>
+          <div className="about-card highlight">
+            <span className="eyebrow">Our Vision</span>
+            <h2>Empowering Local Commerce</h2>
+            <p>
+              Local cafes, salons, clinics, and retail stores know their products better than anyone. Insight Computers builds tools that turn that raw business knowledge into high-converting social media marketing assets in seconds.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="pillars-section">
+        <h2>Our Core Quality & Design Pillars</h2>
+        <div className="info-grid four">
+          <article className="info-card">
+            <ShieldCheck size={28} />
+            <h3>Ad-Policy Safety</h3>
+            <p>We actively discourage deceptive badges or false guarantee icons in generated visual briefs—ensuring your ad creatives comply with advertising standards.</p>
+          </article>
+          <article className="info-card">
+            <Users size={28} />
+            <h3>Customer Psychology</h3>
+            <p>Prompts are tailored to trigger the right emotional connection: appetite for dining, trust for education, elegance for salons, and urgency for flash sales.</p>
+          </article>
+          <article className="info-card">
+            <Layers size={28} />
+            <h3>Visual Hierarchy</h3>
+            <p>Every generated brief provides clear boundaries between main headlines, secondary copy, logo placement, and focal images for clean mobile feed readability.</p>
+          </article>
+          <article className="info-card">
+            <Lightbulb size={28} />
+            <h3>Zero Jargon</h3>
+            <p>No need to memorize technical terms. Plain business language powers every option in our prompt builder.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="insight-products-section">
+        <div className="section-title-row">
+          <div>
+            <span className="eyebrow">Product Ecosystem</span>
+            <h2>More Products from Insight Computers</h2>
+          </div>
+        </div>
+        <div className="info-grid three">
+          {insightProducts.map((prod) => (
+            <article className="info-card product-card" key={prod.id}>
+              <span className="product-status">{prod.status}</span>
+              <h3>{prod.name}</h3>
+              <p>{prod.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="about-transparency-section">
+        <h2>Publisher Information & Trust Standards</h2>
+        <div className="info-card">
+          <p>
+            <strong>Insight Computers</strong> operates Likhwai.Online under strict quality standards and full user privacy compliance:
+          </p>
+          <ul>
+            <li><strong>Zero Mandatory Registration:</strong> Instant browser-based web access without compulsory email sign-up.</li>
+            <li><strong>Privacy First:</strong> Your business form details are processed in real time and saved locally in your browser storage.</li>
+            <li><strong>AdSense Supported:</strong> Supported by unobtrusive online advertising to maintain free access for all users.</li>
+          </ul>
+        </div>
+      </section>
+
+      <AdSlot label="Advertisement space on About page" />
+    </ArticleShell>
+  );
 }
 
 function ContentSections({ navigate }) {
@@ -643,7 +1360,7 @@ function ContentSections({ navigate }) {
       <div className="section-title-row">
         <div>
           <p className="eyebrow">Guide</p>
-          <h2 id="tool-guide-heading">How to use Creative Prompt Writer well</h2>
+          <h2 id="tool-guide-heading">How to use Likhwai.Online Marketing Prompt Builder</h2>
         </div>
         <Link to="/faq" navigate={navigate} className="text-link">Read FAQ</Link>
       </div>
@@ -665,7 +1382,7 @@ function RecentGuides({ navigate }) {
       <div className="section-title-row">
         <div>
           <p className="eyebrow">Latest Guides</p>
-          <h2>AI prompt guides for small business marketing</h2>
+          <h2>AI prompt engineering guides for local businesses</h2>
         </div>
         <Link to="/blog" navigate={navigate} className="text-link">View all guides</Link>
       </div>
@@ -712,16 +1429,6 @@ function FAQSection() {
   );
 }
 
-function HistoryPanel({ history, onRestore }) {
-  return (
-    <section className="content-section history-wide" id="history">
-      <p className="eyebrow">Recent</p>
-      <h2>Your recent descriptions</h2>
-      <HistoryList items={history} onRestore={onRestore} />
-    </section>
-  );
-}
-
 function PolicyPage({ page, path, navigate }) {
   useSeo({
     title: page.title,
@@ -744,7 +1451,7 @@ function PolicyPage({ page, path, navigate }) {
 }
 
 function FAQPage({ path, navigate }) {
-  const description = 'Frequently asked questions about Creative Prompt Writer, AI image prompts, business use, and privacy.';
+  const description = 'Frequently asked questions about Likhwai.Online AI Marketing Prompt Platform, business use, and privacy.';
   useSeo({
     title: 'FAQ',
     description,
@@ -910,7 +1617,7 @@ function SearchPage({ path, navigate }) {
       `${record.title} ${record.description} ${record.type}`.toLowerCase().includes(needle),
     );
   }, [query]);
-  const description = 'Search Creative Prompt Writer pages, policy documents, prompt guides, and AI marketing articles.';
+  const description = 'Search Likhwai.Online pages, policy documents, prompt guides, and AI marketing articles.';
 
   useSeo({
     title: 'Search',
@@ -946,7 +1653,7 @@ function SearchPage({ path, navigate }) {
 }
 
 function SitemapPage({ path, navigate }) {
-  const description = 'Human-readable sitemap for Creative Prompt Writer pages, policies, and blog guides.';
+  const description = 'Human-readable sitemap for Likhwai.Online pages, policies, and blog guides.';
   useSeo({
     title: 'Sitemap',
     description,
@@ -958,6 +1665,14 @@ function SitemapPage({ path, navigate }) {
     <ArticleShell title="Sitemap" description={description} path={path} navigate={navigate}>
       <div className="sitemap-list">
         <Link to="/" navigate={navigate}>Home and prompt tool</Link>
+        <Link to="/examples" navigate={navigate}>Examples Gallery</Link>
+        <Link to="/library" navigate={navigate}>Prompt Library</Link>
+        <Link to="/templates" navigate={navigate}>Templates</Link>
+        <Link to="/how-it-works" navigate={navigate}>How It Works</Link>
+        <Link to="/features" navigate={navigate}>Features</Link>
+        <Link to="/pricing" navigate={navigate}>Pricing</Link>
+        <Link to="/services" navigate={navigate}>Services</Link>
+        <Link to="/why-us" navigate={navigate}>Why Choose Us</Link>
         <Link to="/blog" navigate={navigate}>Blog</Link>
         <Link to="/search" navigate={navigate}>Search</Link>
         <Link to="/faq" navigate={navigate}>FAQ</Link>
@@ -994,20 +1709,6 @@ function ErrorPage({ code, path, navigate }) {
         <Link to="/search" navigate={navigate} className="ghost-button"><Search size={18} /> Search site</Link>
       </div>
     </ArticleShell>
-  );
-}
-
-function ArticleShell({ title, description, path, navigate, children }) {
-  return (
-    <article className="article-shell">
-      <Breadcrumbs path={path} navigate={navigate} />
-      <header className="article-hero">
-        <p className="eyebrow">{SITE.productName}</p>
-        <h1>{title}</h1>
-        <p>{description}</p>
-      </header>
-      {children}
-    </article>
   );
 }
 
@@ -1176,293 +1877,6 @@ function WhyUsPage({ path, navigate }) {
   );
 }
 
-function AboutPage({ path, navigate }) {
-  const description = 'Learn about Likhwai.Online, our mission, visual design methodology, and commitment to free, accessible AI marketing tools.';
-
-  useSeo({
-    title: 'About Us',
-    description,
-    path,
-    schema: pageSchema('About Us', path, description, [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'AboutPage',
-        name: 'About Likhwai.Online',
-        description,
-        publisher: { '@type': 'Organization', name: SITE.name, url: SITE.origin },
-      },
-    ]),
-  });
-
-  return (
-    <ArticleShell
-      title="About Likhwai.Online"
-      description="We bridge the gap between small business marketing ideas and high-performing AI image design briefs."
-      path={path}
-      navigate={navigate}
-    >
-      <section className="about-hero-section">
-        <div className="about-grid">
-          <div className="about-card">
-            <span className="eyebrow">Our Mission</span>
-            <h2>Democratizing Professional AI Prompt Briefs</h2>
-            <p>
-              Likhwai.Online was built with a clear purpose: to make AI design workflows accessible and practical for everyday small business owners, local service providers, freelancers, and marketers.
-            </p>
-            <p>
-              Most AI image generators produce unpredictable results when fed simple one-line prompts. We eliminate that frustration by converting straightforward business details into structured visual directions that ChatGPT, DALL-E, Midjourney, and Flux understand effortlessly.
-            </p>
-          </div>
-          <div className="about-card highlight">
-            <span className="eyebrow">Our Story</span>
-            <h2>Built for Local Business Reality</h2>
-            <p>
-              Small businesses know their products, offers, and target customers better than anyone. However, translating an upcoming festival discount or new menu launch into complex prompt engineering keywords can feel overwhelming.
-            </p>
-            <p>
-              Creative Prompt Writer asks intuitive business questions—such as post goal, headline copy, brand colors, and visual focus—and generates an error-free, copy-ready prompt in seconds.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="pillars-section">
-        <h2>Our Core Quality & Design Pillars</h2>
-        <div className="info-grid four">
-          <article className="info-card">
-            <ShieldCheck size={28} />
-            <h3>Ad-Policy Safety</h3>
-            <p>We actively discourage deceptive badges, false guarantee icons, or fake reviews in generated visual briefs—ensuring your creatives comply with advertising standards.</p>
-          </article>
-          <article className="info-card">
-            <Users size={28} />
-            <h3>Customer Psychology</h3>
-            <p>Prompts are tailored to trigger the right emotional connection: appetite for dining, trust for education, elegance for salons, and urgency for flash sales.</p>
-          </article>
-          <article className="info-card">
-            <Layers size={28} />
-            <h3>Visual Hierarchy</h3>
-            <p>Every generated brief provides clear boundaries between main headlines, secondary copy, logo placement, and focal images for clean mobile feed readability.</p>
-          </article>
-          <article className="info-card">
-            <Lightbulb size={28} />
-            <h3>Zero Jargon</h3>
-            <p>No need to memorize technical terms like focal length, camera aperture, or rendering engines. Plain business language powers every option.</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="about-transparency-section">
-        <h2>Publisher Information & Transparency</h2>
-        <div className="info-card">
-          <p>
-            <strong>Likhwai.Online</strong> is an independent web application dedicated to AI writing and prompt education. We maintain strict editorial guidelines and provide complete user privacy:
-          </p>
-          <ul>
-            <li><strong>No Required Registrations:</strong> The tool operates locally in your web browser.</li>
-            <li><strong>Zero Data Selling:</strong> User input is processed in real time and stored locally in browser storage for session convenience.</li>
-            <li><strong>Monetization & Ad Policy:</strong> Likhwai.Online is supported by unobtrusive online advertising to keep the platform free for all users.</li>
-          </ul>
-        </div>
-      </section>
-
-      <AdSlot label="Advertisement space on About page" />
-    </ArticleShell>
-  );
-}
-
-function ContactPage({ path, navigate }) {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: 'General Inquiry', message: '' });
-  const [captcha, setCaptcha] = useState(() => createCaptcha());
-  const [captchaInput, setCaptchaInput] = useState('');
-  const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
-
-  const description = 'Contact Likhwai.Online for support, feedback, partnerships, policy questions, or technical inquiries.';
-
-  useSeo({
-    title: 'Contact Us',
-    description,
-    path,
-    schema: pageSchema('Contact Us', path, description, [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'ContactPage',
-        name: 'Contact Likhwai.Online',
-        url: absoluteUrl(path),
-        description,
-      },
-    ]),
-  });
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      setStatusMsg({ type: 'error', text: 'Please fill in all required fields (Name, Email, Message).' });
-      return;
-    }
-    if (captchaInput.trim() !== captcha.answer) {
-      setStatusMsg({ type: 'error', text: 'Incorrect security check solution. Please try again.' });
-      return;
-    }
-
-    setStatusMsg({
-      type: 'success',
-      text: 'Thank you! Your message has been received. Our team will respond to your email within 24 to 48 hours.',
-    });
-    setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
-    setCaptchaInput('');
-    setCaptcha(createCaptcha());
-  }
-
-  return (
-    <ArticleShell
-      title="Contact Us"
-      description="Have questions, suggestions, feedback, or policy inquiries? Send us a message and our team will be happy to assist."
-      path={path}
-      navigate={navigate}
-    >
-      <div className="contact-grid">
-        <section className="contact-form-section">
-          <h2>Send Us a Message</h2>
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <label className="field">
-              <span>Your Name *</span>
-              <input
-                type="text"
-                value={formData.name}
-                placeholder="Enter your full name"
-                required
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              />
-            </label>
-
-            <label className="field">
-              <span>Email Address *</span>
-              <input
-                type="email"
-                value={formData.email}
-                placeholder="example@domain.com"
-                required
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-            </label>
-
-            <label className="field">
-              <span>Subject / Inquiry Type</span>
-              <select
-                value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-              >
-                <option value="General Inquiry">General Inquiry</option>
-                <option value="Feedback & Suggestions">Feedback & Suggestions</option>
-                <option value="Policy & Ad Concerns">Policy & Ad Concerns</option>
-                <option value="Technical Issue">Technical Issue</option>
-                <option value="Partnership">Partnership</option>
-              </select>
-            </label>
-
-            <label className="field field-wide">
-              <span>Message *</span>
-              <textarea
-                rows={5}
-                value={formData.message}
-                placeholder="Type your message here..."
-                required
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              />
-            </label>
-
-            <div className="captcha-panel">
-              <div>
-                <p className="captcha-label">Security check</p>
-                <strong>Solve this: {captcha.prompt}</strong>
-              </div>
-              <div className="captcha-controls">
-                <input
-                  className="captcha-input"
-                  value={captchaInput}
-                  inputMode="numeric"
-                  placeholder="Answer"
-                  required
-                  onChange={(e) => setCaptchaInput(e.target.value)}
-                />
-                <button
-                  className="ghost-button captcha-refresh"
-                  type="button"
-                  onClick={() => {
-                    setCaptcha(createCaptcha());
-                    setCaptchaInput('');
-                  }}
-                  aria-label="Refresh security check"
-                >
-                  <RotateCw size={18} />
-                </button>
-              </div>
-            </div>
-
-            {statusMsg.text ? (
-              <div className={`status-banner ${statusMsg.type}`}>
-                {statusMsg.type === 'success' ? <CheckCircle2 size={18} /> : <HelpCircle size={18} />}
-                <span>{statusMsg.text}</span>
-              </div>
-            ) : null}
-
-            <button className="primary-button submit-button" type="submit">
-              <Send size={18} /> Send Message
-            </button>
-          </form>
-        </section>
-
-        <aside className="contact-info-section">
-          <h2>Direct Contact Information</h2>
-          <div className="info-card">
-            <div className="contact-item">
-              <Mail className="contact-item-icon" size={20} />
-              <div>
-                <strong>Email Address</strong>
-                <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
-              </div>
-            </div>
-
-            <div className="contact-item">
-              <MapPin className="contact-item-icon" size={20} />
-              <div>
-                <strong>Office Address</strong>
-                <p>{SITE.address}</p>
-              </div>
-            </div>
-
-            <div className="contact-item">
-              <Clock className="contact-item-icon" size={20} />
-              <div>
-                <strong>Support Hours</strong>
-                <p>{SITE.supportHours}</p>
-              </div>
-            </div>
-
-            <div className="contact-item">
-              <ShieldCheck className="contact-item-icon" size={20} />
-              <div>
-                <strong>Response Guarantee</strong>
-                <p>We review and respond to genuine inquiries within 24 to 48 business hours.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="info-card trust-note">
-            <h3>Privacy & Trust Commitment</h3>
-            <p>
-              We value your privacy. Email addresses and message details submitted through this form are strictly used to respond to your request and will never be sold or shared with third parties.
-            </p>
-          </div>
-        </aside>
-      </div>
-
-      <AdSlot label="Advertisement space on Contact page" />
-    </ArticleShell>
-  );
-}
-
 function Layout({ children, path, navigate }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -1473,10 +1887,10 @@ function Layout({ children, path, navigate }) {
         <aside className={`sidebar${sidebarOpen ? ' open' : ''}`}>
           <div className="sidebar-header">
             <div className="brand-block">
-              <img className="brand-logo" src={SITE.logo} alt="Creative Prompt Writer logo" loading="eager" width="54" height="54" />
+              <img className="brand-logo" src={SITE.logo} alt="Likhwai.Online logo" loading="eager" width="54" height="54" />
               <div>
                 <strong>{SITE.name}</strong>
-                <span>{SITE.productName}</span>
+                <span className="brand-subtext">by Insight Computers</span>
               </div>
             </div>
             <button className="sidebar-close" onClick={() => setSidebarOpen(false)} aria-label="Close menu" type="button">
@@ -1485,22 +1899,34 @@ function Layout({ children, path, navigate }) {
           </div>
           <nav className="nav-list" aria-label="Main navigation">
             <Link className={path === '/' ? 'active' : ''} to="/" navigate={navigate} onClick={() => setSidebarOpen(false)}>
-              <FileText size={18} /> Home / Create
+              <Wand2 size={18} /> Prompt Builder
             </Link>
-            <Link className={path === '/services' ? 'active' : ''} to="/services" navigate={navigate} onClick={() => setSidebarOpen(false)}>
-              <Zap size={18} /> Services
+            <Link className={path === '/examples' ? 'active' : ''} to="/examples" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <ImageIcon size={18} /> Gallery
             </Link>
-            <Link className={path === '/why-us' ? 'active' : ''} to="/why-us" navigate={navigate} onClick={() => setSidebarOpen(false)}>
-              <Award size={18} /> Why Us
+            <Link className={path === '/library' ? 'active' : ''} to="/library" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <LayoutGrid size={18} /> Library
+            </Link>
+            <Link className={path === '/templates' ? 'active' : ''} to="/templates" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <Grid size={18} /> Templates
+            </Link>
+            <Link className={path === '/how-it-works' ? 'active' : ''} to="/how-it-works" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <Layers size={18} /> How It Works
+            </Link>
+            <Link className={path === '/features' ? 'active' : ''} to="/features" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <Sparkles size={18} /> Features
+            </Link>
+            <Link className={path === '/pricing' ? 'active' : ''} to="/pricing" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <Tag size={18} /> Pricing
+            </Link>
+            <Link className={path === '/blog' ? 'active' : ''} to="/blog" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <History size={18} /> Blog
             </Link>
             <Link className={path === '/about' ? 'active' : ''} to="/about" navigate={navigate} onClick={() => setSidebarOpen(false)}>
               <Home size={18} /> About
             </Link>
             <Link className={path === '/contact' ? 'active' : ''} to="/contact" navigate={navigate} onClick={() => setSidebarOpen(false)}>
               <Mail size={18} /> Contact
-            </Link>
-            <Link className={path === '/blog' ? 'active' : ''} to="/blog" navigate={navigate} onClick={() => setSidebarOpen(false)}>
-              <History size={18} /> Blog
             </Link>
             <Link className={path === '/search' ? 'active' : ''} to="/search" navigate={navigate} onClick={() => setSidebarOpen(false)}>
               <Search size={18} /> Search
@@ -1524,11 +1950,18 @@ function Layout({ children, path, navigate }) {
 function Footer({ navigate }) {
   const footerLinks = [
     ['Home', '/'],
-    ['Services', '/services'],
-    ['Why Choose Us', '/why-us'],
+    ['Prompt Builder', '/'],
+    ['Examples Gallery', '/examples'],
+    ['Prompt Library', '/library'],
+    ['Templates', '/templates'],
+    ['How It Works', '/how-it-works'],
+    ['Features', '/features'],
+    ['Pricing', '/pricing'],
+    ['Blog', '/blog'],
     ['About Us', '/about'],
     ['Contact Us', '/contact'],
-    ['Blog', '/blog'],
+    ['Services', '/services'],
+    ['Why Us', '/why-us'],
     ['Privacy Policy', '/privacy-policy'],
     ['Terms', '/terms-and-conditions'],
     ['Disclaimer', '/disclaimer'],
@@ -1543,17 +1976,23 @@ function Footer({ navigate }) {
 
   return (
     <footer className="site-footer">
-      <div>
-        <strong>{SITE.name}</strong>
-        <p>{SITE.description}</p>
-        <p>Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+      <div className="footer-top-row">
+        <div>
+          <strong>{SITE.name}</strong>
+          <span className="footer-company-tag">A Product by Insight Computers</span>
+          <p>{SITE.description}</p>
+          <p>Support Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        </div>
       </div>
       <nav aria-label="Footer navigation">
         {footerLinks.map(([label, to]) => (
           <Link key={to} to={to} navigate={navigate}>{label}</Link>
         ))}
       </nav>
-      <p className="copyright">Copyright {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
+      <div className="footer-bottom-bar">
+        <p className="copyright">Copyright {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
+        <p className="credit-tag">Built with ❤️ by <strong>Insight Computers</strong></p>
+      </div>
     </footer>
   );
 }
@@ -1565,7 +2004,13 @@ export default function App() {
   const blogPost = blogPosts.find((post) => post.slug === blogSlug);
 
   let content;
-  if (path === '/') content = <ToolPage navigate={navigate} />;
+  if (path === '/' || path === '/create' || path === '/builder') content = <ToolPage navigate={navigate} />;
+  else if (path === '/examples') content = <GalleryPage path={path} navigate={navigate} />;
+  else if (path === '/library') content = <LibraryPage path={path} navigate={navigate} />;
+  else if (path === '/templates') content = <TemplatesPage path={path} navigate={navigate} />;
+  else if (path === '/how-it-works') content = <HowItWorksPage path={path} navigate={navigate} />;
+  else if (path === '/features') content = <FeaturesPage path={path} navigate={navigate} />;
+  else if (path === '/pricing') content = <PricingPage path={path} navigate={navigate} />;
   else if (path === '/services') content = <ServicesPage path={path} navigate={navigate} />;
   else if (path === '/why-us') content = <WhyUsPage path={path} navigate={navigate} />;
   else if (path === '/about') content = <AboutPage path={path} navigate={navigate} />;
@@ -1581,4 +2026,3 @@ export default function App() {
 
   return <Layout path={path} navigate={navigate}>{content}</Layout>;
 }
-
