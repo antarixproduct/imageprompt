@@ -890,6 +890,18 @@ function ToolPage({ navigate }) {
   );
 }
 
+function HistoryPanel({ history, onRestore }) {
+  if (!history || history.length === 0) return null;
+
+  return (
+    <section className="content-section history-wide" id="history">
+      <p className="eyebrow">Recent History</p>
+      <h2>Your recent prompt descriptions</h2>
+      <HistoryList items={history} onRestore={onRestore} />
+    </section>
+  );
+}
+
 function GalleryPage({ path, navigate }) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [copiedId, setCopiedId] = useState(null);
