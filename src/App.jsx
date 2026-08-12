@@ -337,6 +337,20 @@ function Breadcrumbs({ path, navigate }) {
   );
 }
 
+function ArticleShell({ title, description, path, navigate, children }) {
+  return (
+    <article className="article-shell">
+      <Breadcrumbs path={path} navigate={navigate} />
+      <header className="article-hero">
+        <p className="eyebrow">{SITE.productName}</p>
+        <h1>{title}</h1>
+        <p>{description}</p>
+      </header>
+      {children}
+    </article>
+  );
+}
+
 function AdSlot({ label = 'Advertisement' }) {
   useEffect(() => {
     try {
