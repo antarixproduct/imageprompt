@@ -125,7 +125,6 @@ const COPY_HINT = 'Copy this prompt and paste into ChatGPT, Midjourney, Flux, Ge
 const ROUTE_TITLES = new Map([
   ['/generate-prompt', 'Generate Prompt'],
   ['/generate', 'Generate Prompt'],
-  ['/choose-by-yourself', 'Choose By Yourself'],
   ['/examples', 'Examples Gallery'],
   ['/library', 'Prompt Library'],
   ['/templates', 'Templates'],
@@ -558,7 +557,7 @@ function fieldPlaceholder(name) {
   return map[name] ?? '';
 }
 
-function ToolPage({ navigate }) {
+function ToolPage({ navigate, isGenerateOnly = false }) {
   const [form, setForm] = useState(defaultForm);
   const [history, setHistory] = useState(() => {
     const saved = window.localStorage.getItem('description-history');
@@ -706,28 +705,36 @@ function ToolPage({ navigate }) {
       <header className="topbar saas-hero">
         <div>
           <div className="product-by-badge">
-            <Sparkles size={14} /> A Product by Insight Computers
+            <Sparkles size={14} /> A Product by <span className="royal-blue">Insight Computers</span>
           </div>
-          <h1>Create Professional AI Marketing Prompts in Seconds</h1>
+          <h1>{isGenerateOnly ? 'Generate AI Marketing Prompt' : 'Create Professional AI Marketing Prompts in Seconds'}</h1>
           <p className="topbar-help">
-            Generate high-quality marketing prompts for ChatGPT, Midjourney, Flux, and other AI image generators without learning prompt engineering. Position your business with expert marketing analysis and conversion psychology.
+            {isGenerateOnly
+              ? 'Fill out the guided choices below to create a structured marketing prompt brief in seconds.'
+              : 'Generate high-quality marketing prompts for ChatGPT, Midjourney, Flux, and other AI image generators without learning prompt engineering. Position your business with expert marketing analysis and conversion psychology.'}
           </p>
-          <div className="hero-cta-buttons">
-            <a href="#create" className="primary-button hero-action-btn">
-              <Wand2 size={18} /> Generate Prompt Now
-            </a>
-            <button className="ghost-button hero-action-btn" type="button" onClick={resetForm}>
-              <RefreshCw size={18} /> Reset Form
-            </button>
-            <Link to="/examples" navigate={navigate} className="ghost-button hero-action-btn">
-              <Eye size={18} /> Browse Examples
-            </Link>
-          </div>
+          {!isGenerateOnly ? (
+            <div className="hero-cta-buttons">
+              <a href="#create" className="primary-button hero-action-btn">
+                <Wand2 size={18} /> Generate Prompt Now
+              </a>
+              <button className="ghost-button hero-action-btn" type="button" onClick={resetForm}>
+                <RefreshCw size={18} /> Reset Form
+              </button>
+              <Link to="/examples" navigate={navigate} className="ghost-button hero-action-btn">
+                <Eye size={18} /> Browse Examples
+              </Link>
+            </div>
+          ) : null}
         </div>
       </header>
 
-      <HeroCarousel />
-      <SupportedModelsBar />
+      {!isGenerateOnly ? (
+        <>
+          <SupportedModelsBar />
+          <HeroCarousel />
+        </>
+      ) : null}
 
       <div className="content-grid" id="create">
         <section className="form-panel" aria-labelledby="generator-heading">
@@ -898,11 +905,15 @@ function ToolPage({ navigate }) {
       </div>
 
       <AdSlot label="Advertisement space below prompt generator" />
-      <ContentSections navigate={navigate} />
-      <RecentGuides navigate={navigate} />
-      <Testimonials />
+      {!isGenerateOnly ? (
+        <>
+          <ContentSections navigate={navigate} />
+          <RecentGuides navigate={navigate} />
+          <Testimonials />
+        </>
+      ) : null}
       <FAQSection />
-      <HistoryPanel history={history} onRestore={setForm} />
+      {!isGenerateOnly ? <HistoryPanel history={history} onRestore={setForm} /> : null}
     </>
   );
 }
@@ -1287,11 +1298,11 @@ function AboutPage({ path, navigate }) {
     >
       <section className="about-company-hero">
         <div className="company-badge-pill">
-          <Sparkles size={16} /> Developed by Insight Computers
+          <Sparkles size={16} /> Developed by <span className="royal-blue">Insight Computers</span>
         </div>
         <h2>Building AI-Powered SaaS Products for Modern Businesses</h2>
         <p>
-          Likhwai.Online is officially created and operated by <strong>Insight Computers</strong>. Our mission is to engineer practical, intuitive, and accessible AI software tools that simplify digital marketing and creative workflows for small businesses, freelancers, and agencies worldwide.
+          Likhwai.Online is officially created and operated by <strong className="royal-blue">Insight Computers</strong>. Our mission is to engineer practical, intuitive, and accessible AI software tools that simplify digital marketing and creative workflows for small businesses, freelancers, and agencies worldwide.
         </p>
       </section>
 
@@ -1308,7 +1319,7 @@ function AboutPage({ path, navigate }) {
             <span className="eyebrow">Our Vision</span>
             <h2>Empowering Local Commerce</h2>
             <p>
-              Local cafes, salons, clinics, and retail stores know their products better than anyone. Insight Computers builds tools that turn that raw business knowledge into high-converting social media marketing assets in seconds.
+              Local cafes, salons, clinics, and retail stores know their products better than anyone. <strong className="royal-blue">Insight Computers</strong> builds tools that turn that raw business knowledge into high-converting social media marketing assets in seconds.
             </p>
           </div>
         </div>
@@ -1344,7 +1355,7 @@ function AboutPage({ path, navigate }) {
         <div className="section-title-row">
           <div>
             <span className="eyebrow">Product Ecosystem</span>
-            <h2>More Products from Insight Computers</h2>
+            <h2>More Products from <span className="royal-blue">Insight Computers</span></h2>
           </div>
         </div>
         <div className="info-grid three">
@@ -1362,7 +1373,7 @@ function AboutPage({ path, navigate }) {
         <h2>Publisher Information & Trust Standards</h2>
         <div className="info-card">
           <p>
-            <strong>Insight Computers</strong> operates Likhwai.Online under strict quality standards and full user privacy compliance:
+            <strong className="royal-blue">Insight Computers</strong> operates Likhwai.Online under strict quality standards and full user privacy compliance:
           </p>
           <ul>
             <li><strong>Zero Mandatory Registration:</strong> Instant browser-based web access without compulsory email sign-up.</li>
@@ -2099,7 +2110,7 @@ function Layout({ children, path, navigate }) {
               <img className="brand-logo" src={SITE.logo} alt="Likhwai.Online logo" loading="eager" width="54" height="54" />
               <div>
                 <strong>{SITE.name}</strong>
-                <span className="brand-subtext">by Insight Computers</span>
+                <span className="brand-subtext">by <span className="royal-blue">Insight Computers</span></span>
               </div>
             </div>
             <button className="sidebar-close" onClick={() => setSidebarOpen(false)} aria-label="Close menu" type="button">
@@ -2112,9 +2123,6 @@ function Layout({ children, path, navigate }) {
             </Link>
             <Link className={path === '/generate-prompt' || path === '/generate' ? 'active' : ''} to="/generate-prompt" navigate={navigate} onClick={() => setSidebarOpen(false)}>
               <Sparkles size={18} /> Generate Prompt
-            </Link>
-            <Link className={path === '/choose-by-yourself' ? 'active' : ''} to="/choose-by-yourself" navigate={navigate} onClick={() => setSidebarOpen(false)}>
-              <Wand2 size={18} /> Choose By Yourself
             </Link>
             <Link className={path === '/examples' ? 'active' : ''} to="/examples" navigate={navigate} onClick={() => setSidebarOpen(false)}>
               <ImageIcon size={18} /> Gallery
@@ -2165,7 +2173,7 @@ function Layout({ children, path, navigate }) {
 function Footer({ navigate }) {
   const footerLinks = [
     ['Home', '/'],
-    ['Prompt Builder', '/'],
+    ['Generate Prompt', '/generate-prompt'],
     ['Examples Gallery', '/examples'],
     ['Prompt Library', '/library'],
     ['Templates', '/templates'],
@@ -2194,7 +2202,7 @@ function Footer({ navigate }) {
       <div className="footer-top-row">
         <div>
           <strong>{SITE.name}</strong>
-          <span className="footer-company-tag">A Product by Insight Computers</span>
+          <span className="footer-company-tag">A Product by <span className="royal-blue">Insight Computers</span></span>
           <p>{SITE.description}</p>
           <p>Support Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
         </div>
@@ -2206,7 +2214,7 @@ function Footer({ navigate }) {
       </nav>
       <div className="footer-bottom-bar">
         <p className="copyright">Copyright {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
-        <p className="credit-tag">Built with ❤️ by <strong>Insight Computers</strong></p>
+        <p className="credit-tag">Built with ❤️ by <strong className="royal-blue">Insight Computers</strong></p>
       </div>
     </footer>
   );
@@ -2219,7 +2227,8 @@ export default function App() {
   const blogPost = blogPosts.find((post) => post.slug === blogSlug);
 
   let content;
-  if (path === '/' || path === '/create' || path === '/builder' || path === '/generate-prompt' || path === '/generate' || path === '/choose-by-yourself') content = <ToolPage navigate={navigate} />;
+  if (path === '/' || path === '/create' || path === '/builder') content = <ToolPage navigate={navigate} isGenerateOnly={false} />;
+  else if (path === '/generate-prompt' || path === '/generate') content = <ToolPage navigate={navigate} isGenerateOnly={true} />;
   else if (path === '/examples') content = <GalleryPage path={path} navigate={navigate} />;
   else if (path === '/library') content = <LibraryPage path={path} navigate={navigate} />;
   else if (path === '/templates') content = <TemplatesPage path={path} navigate={navigate} />;

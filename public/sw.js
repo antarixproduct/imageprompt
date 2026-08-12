@@ -1,4 +1,4 @@
-const CACHE_NAME = 'prompt-gen-v2';
+const CACHE_NAME = 'prompt-gen-v3';
 const ASSETS = [
   '/',
   '/index.html',
@@ -27,10 +27,17 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  // Network-First for HTML navigation to ensure fresh asset hashes after deploy
+  // Network-First with index.html fallback for HTML navigation requests
   if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request))
+      fetch(event.request)
+        .then((response) => {
+          if (!response || response.status === 404) {
+            return caches.match('/index.html') || fetch('/index.html');
+          }
+          return response;
+        })
+        .catch(() => caches.match('/index.html') || fetch('/index.html'))
     );
     return;
   }
