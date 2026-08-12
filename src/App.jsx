@@ -123,6 +123,9 @@ const STEP_TITLES = {
 
 const COPY_HINT = 'Copy this prompt and paste into ChatGPT, Midjourney, Flux, Gemini, or Ideogram with your brand logo.';
 const ROUTE_TITLES = new Map([
+  ['/generate-prompt', 'Generate Prompt'],
+  ['/generate', 'Generate Prompt'],
+  ['/choose-by-yourself', 'Choose By Yourself'],
   ['/examples', 'Examples Gallery'],
   ['/library', 'Prompt Library'],
   ['/templates', 'Templates'],
@@ -2105,7 +2108,13 @@ function Layout({ children, path, navigate }) {
           </div>
           <nav className="nav-list" aria-label="Main navigation">
             <Link className={path === '/' ? 'active' : ''} to="/" navigate={navigate} onClick={() => setSidebarOpen(false)}>
-              <Wand2 size={18} /> Prompt Builder
+              <Wand2 size={18} /> Home
+            </Link>
+            <Link className={path === '/generate-prompt' || path === '/generate' ? 'active' : ''} to="/generate-prompt" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <Sparkles size={18} /> Generate Prompt
+            </Link>
+            <Link className={path === '/choose-by-yourself' ? 'active' : ''} to="/choose-by-yourself" navigate={navigate} onClick={() => setSidebarOpen(false)}>
+              <Wand2 size={18} /> Choose By Yourself
             </Link>
             <Link className={path === '/examples' ? 'active' : ''} to="/examples" navigate={navigate} onClick={() => setSidebarOpen(false)}>
               <ImageIcon size={18} /> Gallery
@@ -2210,7 +2219,7 @@ export default function App() {
   const blogPost = blogPosts.find((post) => post.slug === blogSlug);
 
   let content;
-  if (path === '/' || path === '/create' || path === '/builder') content = <ToolPage navigate={navigate} />;
+  if (path === '/' || path === '/create' || path === '/builder' || path === '/generate-prompt' || path === '/generate' || path === '/choose-by-yourself') content = <ToolPage navigate={navigate} />;
   else if (path === '/examples') content = <GalleryPage path={path} navigate={navigate} />;
   else if (path === '/library') content = <LibraryPage path={path} navigate={navigate} />;
   else if (path === '/templates') content = <TemplatesPage path={path} navigate={navigate} />;
