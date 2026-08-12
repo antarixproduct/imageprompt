@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
+  AlertTriangle,
   ArrowRight,
   Award,
   BadgeCheck,
+  Building2,
   Check,
+  CheckCircle,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
@@ -1367,6 +1370,186 @@ function AboutPage({ path, navigate }) {
       </section>
 
       <AdSlot label="Advertisement space on About page" />
+    </ArticleShell>
+  );
+}
+
+function ContactPage({ path, navigate }) {
+  const description = `Contact Insight Computers support team at ${SITE.email} for help with Likhwai.Online AI Marketing Prompt Builder.`;
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
+  const [captcha, setCaptcha] = useState(createCaptcha);
+  const [userCaptcha, setUserCaptcha] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  useSeo({
+    title: 'Contact Us',
+    description,
+    path,
+    schema: pageSchema('Contact Us', path, description),
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (parseInt(userCaptcha.trim(), 10) !== captcha.answer) {
+      setErrorMsg('Incorrect captcha security answer. Please try again.');
+      setCaptcha(createCaptcha());
+      setUserCaptcha('');
+      return;
+    }
+    setSubmitted(true);
+    setErrorMsg('');
+  }
+
+  return (
+    <ArticleShell
+      title="Contact Insight Computers Support"
+      description="Have questions about Likhwai.Online AI Marketing Prompt Builder? Get in touch with our support team."
+      path={path}
+      navigate={navigate}
+    >
+      <div className="contact-grid">
+        <div className="contact-form-section">
+          {submitted ? (
+            <div className="status-banner success">
+              <CheckCircle size={20} />
+              <div>
+                <strong>Message Sent Successfully!</strong>
+                <p>Thank you for contacting Insight Computers. We will respond to {formData.email} within 24 hours.</p>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="contact-form">
+              <h3>Send Us a Direct Message</h3>
+              <p>Fill out the form below or reach out via email. Our technical team responds within 24 hours.</p>
+
+              {errorMsg ? (
+                <div className="status-banner error">
+                  <AlertTriangle size={18} /> <span>{errorMsg}</span>
+                </div>
+              ) : null}
+
+              <label className="field">
+                <span>Your Name *</span>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Rahul Sharma"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </label>
+
+              <label className="field">
+                <span>Email Address *</span>
+                <input
+                  type="email"
+                  required
+                  placeholder="e.g. yourname@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </label>
+
+              <label className="field">
+                <span>Subject *</span>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Prompt Customization Inquiry / AdSense Partnership"
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                />
+              </label>
+
+              <label className="field">
+                <span>Your Message *</span>
+                <textarea
+                  required
+                  rows={5}
+                  placeholder="Describe your inquiry, feedback, or custom prompt requirement in detail..."
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                />
+              </label>
+
+              <div className="field">
+                <span>Security Check: What is {captcha.prompt}? *</span>
+                <div className="captcha-controls">
+                  <input
+                    type="number"
+                    required
+                    placeholder="Enter answer"
+                    value={userCaptcha}
+                    onChange={(e) => setUserCaptcha(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="ghost-button captcha-refresh"
+                    onClick={() => {
+                      setCaptcha(createCaptcha());
+                      setUserCaptcha('');
+                    }}
+                  >
+                    <RefreshCw size={16} /> New Math Check
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" className="primary-button hero-action-btn">
+                Send Message <Send size={16} />
+              </button>
+            </form>
+          )}
+        </div>
+
+        <div className="contact-info-section">
+          <div className="info-card">
+            <h3>Official Contact Information</h3>
+
+            <div className="contact-item">
+              <Mail className="contact-item-icon" size={20} />
+              <div>
+                <strong>Support Email</strong>
+                <p><a href={`mailto:${SITE.email}`} className="text-link">{SITE.email}</a></p>
+              </div>
+            </div>
+
+            <div className="contact-item">
+              <Building2 className="contact-item-icon" size={20} />
+              <div>
+                <strong>Operating Entity & Developer</strong>
+                <p>Insight Computers</p>
+              </div>
+            </div>
+
+            <div className="contact-item">
+              <MapPin className="contact-item-icon" size={20} />
+              <div>
+                <strong>Headquarters Address</strong>
+                <p>{SITE.address}</p>
+              </div>
+            </div>
+
+            <div className="contact-item">
+              <Clock className="contact-item-icon" size={20} />
+              <div>
+                <strong>Support Hours</strong>
+                <p>{SITE.supportHours}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="info-card" style={{ marginTop: '16px' }}>
+            <h3>Publisher Transparency</h3>
+            <p style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>
+              <strong>Likhwai.Online</strong> is an independent AI Marketing Prompt Engineering Platform maintained by <strong>Insight Computers</strong>. We respond to technical inquiries, copyright notices, and feedback within 24 hours.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <AdSlot label="Advertisement space on Contact page" />
     </ArticleShell>
   );
 }

@@ -3,7 +3,7 @@ export const SITE = {
   productName: 'AI Marketing Prompt Builder',
   companyName: 'Insight Computers',
   origin: 'https://likhwai.online',
-  email: 'contact@likhwai.online',
+  email: 'mail.insightcomputer@gmail.com',
   address: 'GS Road, Guwahati, Assam, India - 781005',
   supportHours: 'Monday - Saturday: 9:00 AM - 6:00 PM IST',
   description:
