@@ -52,6 +52,7 @@ import {
   examplesGallery,
   faqItems,
   heroCarouselItems,
+  howItWorksSteps,
   insightProducts,
   policyPages,
   promptLibrary,
@@ -431,11 +432,7 @@ function HeroCarousel() {
       <div className="carousel-card">
         <div className="carousel-preview-box">
           <div className="carousel-badge">{active.badge}</div>
-          <div className="poster-mockup">
-            <Sparkles size={36} className="poster-icon" />
-            <div className="poster-title-text">{active.title}</div>
-            <span className="poster-tag">Prompt Output Preview</span>
-          </div>
+          <img src={active.image} alt={active.title} className="carousel-img" />
         </div>
         <div className="carousel-info-box">
           <span className="carousel-meta-tag">{active.businessType} Campaign</span>
@@ -1098,7 +1095,7 @@ function TemplatesPage({ path, navigate }) {
 }
 
 function HowItWorksPage({ path, navigate }) {
-  const description = 'Understand the 8-step visual workflow for creating professional AI marketing prompts with Likhwai.Online.';
+  const description = 'Step-by-step visual guide for creating professional AI marketing prompts with Likhwai.Online.';
 
   useSeo({
     title: 'How It Works',
@@ -1107,33 +1104,27 @@ function HowItWorksPage({ path, navigate }) {
     schema: pageSchema('How It Works', path, description),
   });
 
-  const steps = [
-    { num: 'Step 1', title: 'Choose Business Type', desc: 'Select from 23+ business categories (Restaurant, Salon, Gym, Dental, etc.)' },
-    { num: 'Step 2', title: 'Choose Marketing Goal', desc: 'Define your post purpose (Flash Sale, Festival Wish, Admission Open, Grand Opening)' },
-    { num: 'Step 3', title: 'Fill Campaign Details', desc: 'Enter headline copy, subhead, discount value, contact details, and brand colors' },
-    { num: 'Step 4', title: 'AI Marketing Analysis', desc: 'Our engine extracts consumer psychology cues, visual focal points, and typography rules' },
-    { num: 'Step 5', title: 'Professional Prompt Generated', desc: 'A clean, copy-ready visual prompt brief is formatted for multimodal AI engines' },
-    { num: 'Step 6', title: 'Copy Prompt in One Click', desc: 'Use the one-click copy button or download as .TXT file to your device' },
-    { num: 'Step 7', title: 'Paste into ChatGPT or Midjourney', desc: 'Paste into ChatGPT, Midjourney, Flux, or Ideogram with your transparent logo' },
-    { num: 'Step 8', title: 'Generate Your Marketing Creative', desc: 'Receive high-converting, professional marketing artwork ready for publishing' },
-  ];
-
   return (
     <ArticleShell
       title="How Likhwai.Online Works"
-      description="From raw business offer to high-converting AI marketing creative in 8 simple steps."
+      description="From raw business offer to high-converting AI marketing creative in simple visual steps."
       path={path}
       navigate={navigate}
     >
       <div className="workflow-timeline">
-        {steps.map((s, idx) => (
-          <div className="timeline-step" key={s.num}>
-            <div className="timeline-badge">{s.num}</div>
-            <div className="timeline-content">
+        {howItWorksSteps.map((s, idx) => (
+          <div className="timeline-step-card" key={s.stepNum}>
+            <div className="timeline-card-header">
+              <div className="timeline-badge">{s.stepNum}</div>
               <h3>{s.title}</h3>
-              <p>{s.desc}</p>
             </div>
-            {idx < steps.length - 1 ? <div className="timeline-connector"><ArrowRight size={18} /></div> : null}
+            <p className="timeline-desc">{s.desc}</p>
+            {s.image ? (
+              <div className="timeline-img-wrapper">
+                <img src={s.image} alt={s.title} className="timeline-step-img" loading="lazy" />
+              </div>
+            ) : null}
+            {idx < howItWorksSteps.length - 1 ? <div className="timeline-connector-down"><ArrowRight size={18} /></div> : null}
           </div>
         ))}
       </div>
